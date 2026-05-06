@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persona — Mapa de Perfis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  VIEW: WELCOME                               ║
+     ╚══════════════════════════════════════════════╝ -->
+<section id="view-welcome" class="view active">
+  <div class="welcome-inner">
+
+    <div class="welcome-logo">
+      <div class="logo-orbs">
+        <div class="logo-orb"></div>
+        <div class="logo-orb"></div>
+        <div class="logo-orb"></div>
+        <div class="logo-orb"></div>
+      </div>
+      <span>Persona</span>
+    </div>
+
+    <h1 class="welcome-title">
+      Descubra sua <span>cor de personalidade</span>
+    </h1>
+    <p class="welcome-desc">
+      15 perguntas profundas para revelar qual dos 4 perfis de comunicação
+      você é — e como você se conecta com as pessoas ao seu redor.
+    </p>
+
+    <div class="welcome-form">
+      <div>
+        <label for="welcome-name">Seu nome</label>
+        <input
+          id="welcome-name"
+          class="input"
+          type="text"
+          placeholder="Como você se chama?"
+          maxlength="40"
+          autocomplete="off"
+        />
+      </div>
+      <button id="welcome-start-btn" class="btn btn-primary" style="width:100%;padding:16px">
+        Começar o teste →
+      </button>
+    </div>
+
+    <div class="profile-bubbles">
+      <div class="profile-bubble">
+        <span style="font-size:1.5rem">🔴</span>
+        <span>Vermelho</span>
+        <div style="font-size:0.72rem;color:var(--red)">Direto</div>
+      </div>
+      <div class="profile-bubble">
+        <span style="font-size:1.5rem">🟡</span>
+        <span>Amarelo</span>
+        <div style="font-size:0.72rem;color:var(--yellow)">Criativo</div>
+      </div>
+      <div class="profile-bubble">
+        <span style="font-size:1.5rem">🟢</span>
+        <span>Verde</span>
+        <div style="font-size:0.72rem;color:var(--green)">Harmonioso</div>
+      </div>
+      <div class="profile-bubble">
+        <span style="font-size:1.5rem">🔵</span>
+        <span>Azul</span>
+        <div style="font-size:0.72rem;color:var(--blue)">Analítico</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.75rem;color:var(--text-dim);margin-top:28px">
+      Baseado nos 4 Perfis de Comunicação de Vitor Santos · Metaforando
+    </p>
+  </div>
+</section>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  VIEW: TEST                                  ║
+     ╚══════════════════════════════════════════════╝ -->
+<section id="view-test" class="view">
+  <div class="test-container">
+
+    <div class="test-header">
+      <div class="welcome-logo" style="margin:0;gap:10px">
+        <div class="logo-orbs" style="width:22px;height:22px;gap:2px">
+          <div class="logo-orb"></div><div class="logo-orb"></div>
+          <div class="logo-orb"></div><div class="logo-orb"></div>
+        </div>
+        <span style="font-size:1rem;font-weight:700">Persona</span>
+      </div>
+      <span id="test-question-num" class="test-counter">Pergunta 1 de 15</span>
+    </div>
+
+    <div class="progress-wrap">
+      <div id="test-progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="test-question-card">
+      <div id="test-question-num-inner" class="question-number">PERGUNTA 1</div>
+      <div id="test-question-text" class="question-text">Carregando...</div>
+      <div id="test-options-grid" class="options-grid"></div>
+    </div>
+
+    <div class="test-nav">
+      <button id="test-next-btn" class="btn btn-primary" disabled>
+        Próxima →
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  VIEW: RESULT                                ║
+     ╚══════════════════════════════════════════════╝ -->
+<section id="view-result" class="view">
+  <div class="result-container">
+
+    <div class="result-celebration">🎉</div>
+    <h2 style="text-align:center;margin-bottom:6px">
+      <span id="result-user-name"></span>, seu perfil é:
+    </h2>
+    <p style="text-align:center;margin-bottom:0">Com base nas suas 15 respostas</p>
+
+    <div id="result-profile-card" class="result-profile-card">
+      <div id="result-icon" class="result-color-icon">🔴</div>
+      <div id="result-color-name" class="result-color-name">Vermelho</div>
+      <div id="result-color-title" class="result-color-title">Direto e Objetivo</div>
+      <div id="result-tagline" class="result-tagline"></div>
+    </div>
+
+    <div style="background:var(--bg-raised);border-radius:var(--radius);padding:20px;margin-bottom:24px">
+      <div class="section-title">Distribuição dos perfis</div>
+      <div id="result-bars" class="result-bars"></div>
+    </div>
+
+    <button id="result-action-btn" class="btn btn-primary" style="width:100%;padding:16px">
+      Ir para o Dashboard →
+    </button>
+
+  </div>
+</section>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  VIEW: DASHBOARD                             ║
+     ╚══════════════════════════════════════════════╝ -->
+<section id="view-dashboard" class="view">
+
+  <!-- Top Bar -->
+  <header class="dash-topbar">
+    <div class="topbar-brand">
+      <div class="logo-orbs" style="width:22px;height:22px;gap:2px">
+        <div class="logo-orb"></div><div class="logo-orb"></div>
+        <div class="logo-orb"></div><div class="logo-orb"></div>
+      </div>
+      Persona
+    </div>
+
+    <div class="topbar-user">
+      <div id="topbar-avatar" class="user-avatar">U</div>
+      <div>
+        <div id="topbar-name" class="topbar-name">Usuário</div>
+        <div id="topbar-badge" class="topbar-badge">—</div>
+      </div>
+      <button id="reset-btn" class="btn-icon btn" title="Resetar tudo" style="margin-left:8px;font-size:0.85rem">↺</button>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="dash-tabs">
+    <button class="tab-btn active" data-tab="network">
+      <span class="tab-icon">🕸️</span> Minha Teia
+    </button>
+    <button class="tab-btn" data-tab="profile">
+      <span class="tab-icon">👤</span> Meu Perfil
+    </button>
+    <button class="tab-btn" data-tab="explain">
+      <span class="tab-icon">📖</span> Os 4 Perfis
+    </button>
+  </nav>
+
+  <!-- Content -->
+  <main class="dash-content">
+
+    <!-- ── NETWORK TAB ─────────────────────────────── -->
+    <div id="tab-network" class="tab-panel active">
+      <div class="network-header">
+        <div>
+          <h2>Teia de Conexões</h2>
+          <p style="font-size:0.88rem;margin-top:2px">Clique em um nó para ver detalhes · Arraste para explorar</p>
+        </div>
+        <button id="dash-add-btn" class="btn btn-primary">
+          + Adicionar Pessoa
+        </button>
+      </div>
+
+      <div class="network-canvas-wrap">
+        <canvas id="network-canvas"></canvas>
+        <div id="network-empty" style="display:none;flex-direction:column;align-items:center;padding:48px 20px;position:absolute;inset:0;justify-content:center;background:var(--bg-card)">
+          <div style="font-size:3rem;margin-bottom:16px">🌐</div>
+          <h3 style="margin-bottom:8px">Sua teia está vazia</h3>
+          <p style="font-size:0.9rem;text-align:center;max-width:300px">
+            Adicione amigos, familiares ou colegas para visualizar suas conexões e compatibilidades.
+          </p>
+          <button onclick="startAddPerson()" class="btn btn-primary" style="margin-top:20px">
+            + Adicionar primeira pessoa
+          </button>
+        </div>
+      </div>
+
+      <div class="network-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Vermelho — Direto</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Amarelo — Criativo</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Verde — Harmonioso</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Azul — Analítico</div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE TAB ─────────────────────────────── -->
+    <div id="tab-profile" class="tab-panel">
+      <div class="profile-grid">
+
+        <!-- Main card -->
+        <div id="profile-main-card" class="profile-main-card">
+          <div id="profile-avatar-icon" class="profile-avatar-big" style="font-size:2.2rem">🔴</div>
+          <div class="profile-main-info">
+            <h2 id="profile-main-name">Usuário</h2>
+            <div id="profile-main-color" style="font-size:1rem;font-weight:600">—</div>
+            <p id="profile-main-desc" style="margin-top:8px;font-size:0.9rem;line-height:1.6"></p>
+          </div>
+        </div>
+
+        <!-- Strengths -->
+        <div class="card">
+          <div class="section-title">✦ Pontos Fortes</div>
+          <ul id="profile-strengths" class="traits-list"></ul>
+        </div>
+
+        <!-- Challenges -->
+        <div class="card">
+          <div class="section-title">◈ Pontos de Atenção</div>
+          <ul id="profile-challenges" class="traits-list"></ul>
+        </div>
+
+        <!-- Connections -->
+        <div class="card" style="grid-column:1/-1">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div class="section-title" style="margin-bottom:0">🔗 Suas Conexões</div>
+            <button onclick="startAddPerson()" class="btn btn-secondary" style="padding:8px 16px;font-size:0.85rem">+ Adicionar</button>
+          </div>
+          <div id="profile-connections" class="connections-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── EXPLAIN TAB ─────────────────────────────── -->
+    <div id="tab-explain" class="tab-panel">
+
+      <h2 style="margin-bottom:6px">Os 4 Perfis de Personalidade</h2>
+      <p style="margin-bottom:28px;font-size:0.9rem">Baseado no modelo de Vitor Santos (Metaforando). Clique em um perfil para detalhes.</p>
+
+      <div id="explain-personalities" class="explain-grid"></div>
+
+      <h3 class="explain-section-title">⚡ Dinâmicas de Conflito</h3>
+      <div id="explain-conflicts" class="conflicts-grid"></div>
+
+      <h3 class="explain-section-title">🤝 Matriz de Compatibilidade</h3>
+      <p style="font-size:0.85rem;margin-bottom:16px">Como cada par de perfis tende a se relacionar.</p>
+      <div id="explain-matrix"></div>
+
+    </div>
+  </main>
+</section>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  VIEW: ADD PERSON                            ║
+     ╚══════════════════════════════════════════════╝ -->
+<section id="view-add" class="view">
+  <div class="add-container">
+
+    <button id="add-back-btn" class="add-back">
+      ← Voltar ao Dashboard
+    </button>
+
+    <!-- STEP 1: Who is answering? -->
+    <div id="add-step-who" class="add-step active">
+      <h2 style="margin-bottom:8px">Adicionar à teia</h2>
+      <p style="margin-bottom:28px">Como será feito o teste para essa pessoa?</p>
+
+      <div class="mode-cards">
+        <div class="mode-card" data-mode="other" onclick="selectAddMode('other')">
+          <div class="mode-icon">🧠</div>
+          <div class="mode-title">Eu vou responder</div>
+          <div class="mode-desc">Você responde sobre ela com base no que conhece da personalidade dela</div>
+        </div>
+        <div class="mode-card" data-mode="self" onclick="selectAddMode('self')">
+          <div class="mode-icon">🙋</div>
+          <div class="mode-title">Ela vai responder</div>
+          <div class="mode-desc">A própria pessoa pega o computador e responde sobre si mesma</div>
+        </div>
+      </div>
+
+      <div class="add-name-section" style="margin-top:24px">
+        <label for="add-name-input">Nome da pessoa</label>
+        <input
+          id="add-name-input"
+          class="input"
+          type="text"
+          placeholder="Nome completo ou apelido"
+          maxlength="40"
+          autocomplete="off"
+        />
+      </div>
+
+      <button id="add-start-btn" class="btn btn-primary" style="width:100%;margin-top:16px;padding:16px" disabled>
+        Começar o teste →
+      </button>
+    </div>
+
+    <!-- STEP 2: Test -->
+    <div id="add-step-test" class="add-step">
+
+      <div class="add-test-header">
+        <div class="add-test-for">
+          <span>📝</span>
+          <span id="add-test-for-name">Respondendo...</span>
+        </div>
+        <span id="add-question-num" class="test-counter">Pergunta 1 de 15</span>
+      </div>
+
+      <div class="progress-wrap" style="margin-bottom:20px">
+        <div id="add-progress-fill" class="progress-fill" style="width:0%"></div>
+      </div>
+
+      <div class="add-test-wrap">
+        <div class="test-question-card">
+          <div class="question-number">PERGUNTA</div>
+          <div id="add-question-text" class="question-text">Carregando...</div>
+          <div id="add-options-grid" class="options-grid"></div>
+        </div>
+      </div>
+
+      <div class="test-nav">
+        <button id="add-next-btn" class="btn btn-primary" disabled>
+          Próxima →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Result -->
+    <div id="add-step-result" class="add-step">
+
+      <h2 style="margin-bottom:4px">Resultado</h2>
+      <p style="margin-bottom:20px">Perfil identificado para esta pessoa</p>
+
+      <div id="add-result-card" class="person-result-card">
+        <div id="add-result-icon" class="person-result-icon">🔴</div>
+        <div id="add-result-name" class="person-result-name">Nome</div>
+        <div id="add-result-color" class="person-result-color">Perfil</div>
+      </div>
+
+      <div class="compat-preview">
+        <div class="compat-preview-title">Compatibilidade com você</div>
+        <div id="add-compat-label" class="compat-preview-label">—</div>
+        <div id="add-compat-desc" class="compat-preview-desc">—</div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:24px">
+        <button id="add-cancel-btn" class="btn btn-secondary" style="flex:1">
+          Cancelar
+        </button>
+        <button id="add-confirm-btn" class="btn btn-primary" style="flex:2;padding:16px">
+          ✦ Adicionar à teia
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  TOOLTIP (network)                           ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="network-tooltip" class="network-tooltip">
+  <div class="tooltip-name">—</div>
+  <div class="tooltip-type">—</div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  MODAL: Node Info                            ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="node-modal" class="modal-overlay">
+  <div class="modal-box">
+    <button id="modal-close-btn" class="btn-icon btn modal-close">✕</button>
+
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px">
+      <div id="modal-avatar-icon" style="font-size:2.5rem;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center">🔴</div>
+      <div>
+        <h2 id="modal-person-name">Nome</h2>
+        <div id="modal-person-color" style="font-size:0.9rem;font-weight:600;margin-top:2px">Perfil</div>
+      </div>
+    </div>
+
+    <p id="modal-person-desc" style="font-size:0.9rem;line-height:1.65;margin-bottom:20px"></p>
+
+    <div style="background:var(--bg-raised);border-radius:var(--radius);padding:16px;margin-bottom:20px">
+      <div class="section-title">Compatibilidade com você</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div id="modal-compat-label" style="font-size:1.1rem;font-weight:700">—</div>
+        <div id="modal-compat-stars" style="font-size:1.1rem;letter-spacing:2px">☆☆☆☆</div>
+      </div>
+      <p id="modal-compat-desc" style="font-size:0.85rem;margin-top:8px"></p>
+    </div>
+
+    <button id="modal-remove-btn" class="btn btn-ghost" style="color:#E05252;width:100%;margin-top:4px">
+      🗑 Remover da teia
+    </button>
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  MODAL: Explain Detail                       ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="explain-modal" class="modal-overlay">
+  <div class="modal-box">
+    <button id="explain-modal-close" class="btn-icon btn modal-close">✕</button>
+
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div id="explain-modal-icon" style="font-size:2.5rem">🔴</div>
+      <div>
+        <h2 id="explain-modal-name" style="font-size:1.6rem">Vermelho</h2>
+        <div id="explain-modal-title" style="font-size:0.9rem;color:var(--text-muted);margin-top:2px">Direto e Objetivo</div>
+      </div>
+    </div>
+
+    <p id="explain-modal-desc" style="font-size:0.92rem;line-height:1.7;margin-bottom:20px"></p>
+
+    <div class="detail-sections">
+      <div class="detail-section">
+        <h4>✦ Pontos Fortes</h4>
+        <ul id="explain-modal-strengths"></ul>
+      </div>
+      <div class="detail-section">
+        <h4>◈ Desafios</h4>
+        <ul id="explain-modal-challenges"></ul>
+      </div>
+      <div class="detail-section">
+        <h4>💬 Como comunicar</h4>
+        <p id="explain-modal-communication" style="font-size:0.88rem;color:var(--text-muted)"></p>
+      </div>
+      <div class="detail-section">
+        <h4>⚡ Motivações</h4>
+        <p id="explain-modal-motivations" style="font-size:0.88rem;color:var(--text-muted)"></p>
+      </div>
+      <div class="detail-section">
+        <h4>🛡️ Medos</h4>
+        <p id="explain-modal-fears" style="font-size:0.88rem;color:var(--text-muted)"></p>
+      </div>
+      <div class="detail-section">
+        <h4>🚶 Linguagem Corporal</h4>
+        <p id="explain-modal-body" style="font-size:0.88rem;color:var(--text-muted)"></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║  TOAST                                       ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="toast" class="toast">
+  <span id="toast-icon" class="toast-icon">✦</span>
+  <span id="toast-msg">Mensagem</span>
+</div>
+
+
+<!-- ── Scripts ──────────────────────────────────── -->
+<script src="js/data.js"></script>
+<script src="js/network.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
