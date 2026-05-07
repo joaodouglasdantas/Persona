@@ -19,15 +19,15 @@
 
 ---
 
-## 🎯 O que é?
+## O que é?
 
 Persona é um quiz de personalidade baseado nos **4 Perfis de Comunicação** de Vitor Santos (canal [Metaforando](https://youtu.be/GyTIT7lg7wQ?si=fHYi8Akf4FjjkG2v)). Com 15 perguntas, o app revela qual das 4 cores representa sua forma de se comunicar — e ainda permite mapear as pessoas ao seu redor em uma teia interativa de conexões.
 
-Feito por pura diversão, sem pretensão alguma. 🙂
+Feito por pura diversão, sem pretensão alguma.
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - **Quiz de 15 perguntas** para descobrir seu perfil de personalidade
 - **4 perfis de cor** com descrições detalhadas de pontos fortes, desafios, motivações e medos
@@ -38,7 +38,7 @@ Feito por pura diversão, sem pretensão alguma. 🙂
 
 ---
 
-## 🎨 Os 4 Perfis
+## Os 4 Perfis
 
 | Cor | Estilo | Traço Principal |
 |---|---|---|
@@ -49,7 +49,7 @@ Feito por pura diversão, sem pretensão alguma. 🙂
 
 ---
 
-## 🚀 Como usar
+## Como usar
 
 Acesse direto pelo navegador — sem instalação:
 
@@ -66,7 +66,7 @@ open index.html
 
 ---
 
-## 🗂️ Estrutura
+## Estrutura
 
 ```
 Persona/
@@ -82,7 +82,7 @@ Persona/
 
 ---
 
-## 📚 Referência
+## Referência
 
 Baseado no conteúdo de **Vitor Santos** do canal Metaforando:
 
