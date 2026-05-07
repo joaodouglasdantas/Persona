@@ -292,6 +292,11 @@
           <div class="mode-title">Ela vai responder</div>
           <div class="mode-desc">A própria pessoa pega o computador e responde sobre si mesma</div>
         </div>
+        <div class="mode-card" data-mode="direct" onclick="selectAddMode('direct')">
+          <div class="mode-icon">🎯</div>
+          <div class="mode-title">Já sei o perfil</div>
+          <div class="mode-desc">Ela já fez o teste em outro lugar e você sabe qual é a cor dela</div>
+        </div>
       </div>
 
       <div class="add-name-section" style="margin-top:24px">
@@ -308,6 +313,38 @@
 
       <button id="add-start-btn" class="btn btn-primary" style="width:100%;margin-top:16px;padding:16px" disabled>
         Começar o teste →
+      </button>
+    </div>
+
+    <div id="add-step-direct" class="add-step">
+      <h2 style="margin-bottom:8px">Qual é o perfil?</h2>
+      <p style="margin-bottom:24px">Selecione a cor de <strong id="add-direct-name">—</strong></p>
+
+      <div class="direct-color-grid">
+        <button class="direct-color-btn" data-color="V" onclick="selectDirectColor('V')">
+          <span class="direct-color-icon">🔴</span>
+          <span class="direct-color-name">Vermelho</span>
+          <span class="direct-color-desc">Direto e Objetivo</span>
+        </button>
+        <button class="direct-color-btn" data-color="A" onclick="selectDirectColor('A')">
+          <span class="direct-color-icon">🟡</span>
+          <span class="direct-color-name">Amarelo</span>
+          <span class="direct-color-desc">Expansivo e Criativo</span>
+        </button>
+        <button class="direct-color-btn" data-color="Ve" onclick="selectDirectColor('Ve')">
+          <span class="direct-color-icon">🟢</span>
+          <span class="direct-color-name">Verde</span>
+          <span class="direct-color-desc">Calmo e Harmonioso</span>
+        </button>
+        <button class="direct-color-btn" data-color="Az" onclick="selectDirectColor('Az')">
+          <span class="direct-color-icon">🔵</span>
+          <span class="direct-color-name">Azul</span>
+          <span class="direct-color-desc">Analítico e Preciso</span>
+        </button>
+      </div>
+
+      <button class="btn btn-secondary" style="width:100%;margin-top:20px" onclick="showAddStep('step-who')">
+        ← Voltar
       </button>
     </div>
 

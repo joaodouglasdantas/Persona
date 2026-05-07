@@ -442,6 +442,13 @@ function beginAddTest() {
   state.addName = nameInput.value.trim();
   if (!state.addName || !state.addMode) return;
 
+  if (state.addMode === 'direct') {
+    document.getElementById('add-direct-name').textContent = state.addName;
+    document.querySelectorAll('.direct-color-btn').forEach(b => b.classList.remove('selected'));
+    showAddStep('step-direct');
+    return;
+  }
+
   state.addAnswers  = [];
   state.addCurrentQ = 0;
   state.addShuffledQs = shuffleOptions([...QUESTIONS]);
@@ -514,6 +521,46 @@ function finishAddTest() {
   const p = PERSONALITIES[result.dominant];
   const mainUser = getMainUser();
   const compat   = mainUser ? getCompatibility(mainUser.color, result.dominant) : null;
+
+  document.getElementById('add-result-name').textContent = state.addName;
+  document.getElementById('add-result-icon').textContent = p.icon;
+  document.getElementById('add-result-color').textContent = p.name + ' · ' + p.title;
+  document.getElementById('add-result-color').style.color = p.color;
+
+  const card = document.getElementById('add-result-card');
+  card.style.borderColor = p.color;
+  card.style.background  = `rgba(${p.colorRgb},0.08)`;
+
+  if (compat) {
+    document.getElementById('add-compat-label').textContent = compat.label;
+    document.getElementById('add-compat-desc').textContent  = compat.desc;
+    const compatColors = { 1: '#E05252', 2: '#D4A017', 3: '#3A87C8', 4: '#2EBC6E' };
+    document.getElementById('add-compat-label').style.color = compatColors[compat.level];
+  }
+
+  showAddStep('step-result');
+}
+
+function selectDirectColor(colorKey) {
+  const p = PERSONALITIES[colorKey];
+  if (!p) return;
+
+  // Destaca o botão selecionado
+  document.querySelectorAll('.direct-color-btn').forEach(b => b.classList.remove('selected'));
+  const btn = document.querySelector(`.direct-color-btn[data-color="${colorKey}"]`);
+  if (btn) btn.classList.add('selected');
+
+  // Monta resultado sintético com 100% para a cor escolhida
+  const scores      = { V: 0, A: 0, Ve: 0, Az: 0 };
+  const percentages = { V: 0, A: 0, Ve: 0, Az: 0 };
+  scores[colorKey]      = 1;
+  percentages[colorKey] = 100;
+
+  state.addResultData = { dominant: colorKey, scores, percentages };
+
+  // Preenche a tela de resultado
+  const mainUser = getMainUser();
+  const compat   = mainUser ? getCompatibility(mainUser.color, colorKey) : null;
 
   document.getElementById('add-result-name').textContent = state.addName;
   document.getElementById('add-result-icon').textContent = p.icon;

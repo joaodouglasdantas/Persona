@@ -943,6 +943,9 @@ p  { color: var(--text-muted); }
   gap: 16px;
   margin-top: 24px;
 }
+.mode-cards .mode-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
 .mode-card {
   background: var(--bg-card);
   border: 2px solid var(--border);
@@ -1535,3 +1538,50 @@ p  { color: var(--text-muted); }
 #profile-connections-wrap {
   position: relative;
 }
+/* ── Seleção direta de cor ─────────────────────────────────── */
+.direct-color-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.direct-color-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 16px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  color: var(--text);
+  text-align: center;
+}
+.direct-color-btn:hover {
+  transform: translateY(-3px);
+  background: var(--bg-raised);
+}
+.direct-color-btn.selected {
+  border-color: currentColor;
+  background: var(--bg-raised);
+  transform: translateY(-2px);
+}
+.direct-color-btn[data-color="V"]:hover,
+.direct-color-btn[data-color="V"].selected  { border-color: #E05252; }
+.direct-color-btn[data-color="A"]:hover,
+.direct-color-btn[data-color="A"].selected  { border-color: #D4A017; }
+.direct-color-btn[data-color="Ve"]:hover,
+.direct-color-btn[data-color="Ve"].selected { border-color: #2EBC6E; }
+.direct-color-btn[data-color="Az"]:hover,
+.direct-color-btn[data-color="Az"].selected { border-color: #3A87C8; }
+
+.direct-color-btn[data-color="V"].selected  { background: rgba(224, 82,  82,  0.1); }
+.direct-color-btn[data-color="A"].selected  { background: rgba(212, 160, 23,  0.1); }
+.direct-color-btn[data-color="Ve"].selected { background: rgba(46,  188, 110, 0.1); }
+.direct-color-btn[data-color="Az"].selected { background: rgba(58,  135, 200, 0.1); }
+
+.direct-color-icon { font-size: 2.2rem; }
+.direct-color-name { font-size: 1rem; font-weight: 700; }
+.direct-color-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
