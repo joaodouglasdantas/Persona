@@ -1,11 +1,6 @@
 <div align="center">
 
-<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-  <circle cx="22" cy="22" r="18" fill="#E05252"/>
-  <circle cx="58" cy="22" r="18" fill="#D4A017"/>
-  <circle cx="22" cy="58" r="18" fill="#2EBC6E"/>
-  <circle cx="58" cy="58" r="18" fill="#3A87C8"/>
-</svg>
+<img src="logo.svg" alt="Persona" width="220"/>
 
 # Persona — Mapa de Perfis
 
