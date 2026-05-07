@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persona — Stress Test de Overflow</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { padding: 32px 20px; max-width: 1100px; margin: 0 auto; }
+    .test-section { margin-bottom: 48px; }
+    .test-label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-dim);
+      border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+    .result-pass { color: var(--green); font-size: 0.75rem; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+<div style="margin-bottom:40px">
+  <div class="welcome-logo" style="justify-content:flex-start;margin-bottom:12px">
+    <div class="logo-orbs" style="width:32px;height:32px;gap:3px">
+      <div class="logo-orb"></div><div class="logo-orb"></div>
+      <div class="logo-orb"></div><div class="logo-orb"></div>
+    </div>
+    <span style="font-size:1.2rem;font-weight:800">Persona — Stress Test</span>
+  </div>
+  <p style="font-size:0.9rem">Teste de overflow, truncate e responsividade com dados extremos.</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">1 · Topbar — Nome muito longo</div>
+  <header class="dash-topbar" style="position:relative">
+    <div class="topbar-brand">
+      <div class="logo-orbs" style="width:22px;height:22px;gap:2px">
+        <div class="logo-orb"></div><div class="logo-orb"></div>
+        <div class="logo-orb"></div><div class="logo-orb"></div>
+      </div>
+      Persona
+    </div>
+    <div class="topbar-user">
+      <div class="user-avatar bg-V" style="color:#fff;border-color:var(--red)">A</div>
+      <div class="topbar-user-info">
+        <div class="topbar-name" title="Alexandrina Beatriz Constantino de Magalhães Ferreira">
+          Alexandrina Beatriz Constantino de Magalhães Ferreira
+        </div>
+        <div class="topbar-badge bg-V color-V">🔴 Vermelho — Direto e Objetivo</div>
+      </div>
+      <button class="btn-icon btn" style="margin-left:8px;font-size:0.85rem">↺</button>
+    </div>
+  </header>
+  <p class="result-pass">✓ Nome truncado com ellipsis · Badge oculta em mobile</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">2 · Tela de Resultado — Nome extremo + tagline longa</div>
+  <div class="result-container" style="max-width:100%;text-align:center">
+    <h2>
+      <span id="result-user-name" style="display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom">
+        Alexandrina Beatriz Constantino de Magalhães Ferreira
+      </span>, seu perfil é:
+    </h2>
+    <div id="result-profile-card" class="result-profile-card bg-V" style="margin:24px 0;border-color:var(--red)">
+      <div class="result-color-icon">🔴</div>
+      <div class="result-color-name">Vermelho</div>
+      <div class="result-color-title">Direto e Objetivo</div>
+      <div class="result-tagline">
+        Você não perde tempo: vai direto ao ponto, decide com confiança e lidera naturalmente.
+        Sua energia transforma reuniões em ação e inspira outros a também agirem com determinação.
+        Às vezes sua impaciência pode ser mal interpretada, mas no fundo você só quer resultados reais.
+      </div>
+    </div>
+  </div>
+  <p class="result-pass">✓ Nome truncado · Tagline com clamp em 4 linhas</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">3 · Lista de Conexões — 20 pessoas com nomes longos</div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="section-title" style="margin-bottom:0">🔗 Suas Conexões</div>
+      <button class="btn btn-secondary" style="padding:8px 16px;font-size:0.85rem">+ Adicionar</button>
+    </div>
+    <div class="connections-list-wrap" style="position:relative">
+      <div class="connections-list" id="stress-connections" style="max-height:280px"></div>
+    </div>
+    <div class="connections-count" id="connections-count-badge"></div>
+  </div>
+  <p class="result-pass">✓ Scroll interno · Fade no rodapé · Badge de contagem</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">4 · Grid de Perfis — Descrições longas com clamp</div>
+  <div class="explain-grid">
+    <div class="explain-card" style="cursor:default">
+      <div class="explain-card-header">
+        <div class="explain-card-icon bg-V" style="border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem">🔴</div>
+        <div>
+          <h3 class="color-V" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Vermelho Extremamente Intenso</h3>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Direto, Objetivo, Controlador</div>
+        </div>
+      </div>
+      <div class="explain-card-body">
+        <p>O perfil Vermelho é marcado por uma necessidade intensa de controle, resultados imediatos e eficiência acima de tudo. Pessoas assim tendem a ser líderes natos que não toleram desperdício de tempo nem rodeios. Em situações de conflito, agem com assertividade direta que pode ser percebida como agressividade pelos outros perfis, especialmente Verde e Azul.</p>
+      </div>
+    </div>
+    <div class="explain-card" style="cursor:default">
+      <div class="explain-card-header">
+        <div class="explain-card-icon bg-A" style="border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem">🟡</div>
+        <div>
+          <h3 class="color-A">Amarelo</h3>
+          <div style="font-size:0.8rem;color:var(--text-muted)">Criativo, Entusiasmado</div>
+        </div>
+      </div>
+      <div class="explain-card-body">
+        <p>O Amarelo transborda energia, criatividade e otimismo. São as pessoas que iluminam o ambiente e contagiam todos ao redor com seu entusiasmo irrefreável. Tendem a ter dificuldade com detalhes, rotinas e prazos rígidos — preferem o big picture ao micro-gerenciamento. Relacionamentos são a alma do negócio para eles.</p>
+      </div>
+    </div>
+  </div>
+  <p class="result-pass">✓ Texto clampado em 3 linhas · Título com ellipsis</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">5 · Matriz de Compatibilidade — Overflow horizontal seguro</div>
+  <div class="compat-matrix">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Perfil</th>
+          <th>🔴 Vermelho<br><small>Direto</small></th>
+          <th>🟡 Amarelo<br><small>Criativo</small></th>
+          <th>🟢 Verde<br><small>Harmonioso</small></th>
+          <th>🔵 Azul<br><small>Analítico</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>🔴 Vermelho</th>
+          <td class="compat-3">⚡ Competitivos</td>
+          <td class="compat-4">✦ Excelente</td>
+          <td class="compat-2">⚠ Tensão</td>
+          <td class="compat-3">↔ Neutra</td>
+        </tr>
+        <tr>
+          <th>🟡 Amarelo</th>
+          <td class="compat-4">✦ Excelente</td>
+          <td class="compat-4">✦ Vibração</td>
+          <td class="compat-3">↔ Neutra</td>
+          <td class="compat-2">⚠ Tensão</td>
+        </tr>
+        <tr>
+          <th>🟢 Verde</th>
+          <td class="compat-2">⚠ Tensão</td>
+          <td class="compat-3">↔ Neutra</td>
+          <td class="compat-4">✦ Harmonia</td>
+          <td class="compat-4">✦ Equilíbrio</td>
+        </tr>
+        <tr>
+          <th>🔵 Azul</th>
+          <td class="compat-3">↔ Neutra</td>
+          <td class="compat-2">⚠ Tensão</td>
+          <td class="compat-4">✦ Equilíbrio</td>
+          <td class="compat-4">✦ Analíticos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="result-pass">✓ Overflow-x com scroll · table-layout fixed · min-width seguro</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">6 · Cards de Conflito — Descrições muito longas</div>
+  <div class="conflicts-grid">
+    <div class="conflict-card">
+      <div class="conflict-header">
+        <div class="conflict-title">🔴 Vermelho × 🟢 Verde — O Choque da Urgência</div>
+        <span class="tension-badge tension-3">Alta tensão</span>
+      </div>
+      <p class="conflict-desc">
+        Este é um dos pares mais desafiadores do modelo. O Vermelho opera no modo de urgência constante — 
+        quer resultados agora, sem rodeios, sem análise excessiva. O Verde, por outro lado, precisa de harmonia, 
+        tempo para processar, e evita conflitos a todo custo. Quando esses dois se encontram, o Vermelho 
+        frequentemente interpreta a calma do Verde como falta de comprometimento ou displicência, enquanto o 
+        Verde percebe a pressão do Vermelho como agressão desnecessária. O ciclo se retroalimenta.
+      </p>
+      <div class="conflict-tip">
+        <strong>Dica de ouro:</strong> O Vermelho deve anunciar prazos com antecedência e reconhecer 
+        explicitamente o esforço do Verde. O Verde deve aprender a comunicar seu progresso ativamente, 
+        sem esperar ser perguntado. A chave é transparência antecipada de ambos os lados.
+      </div>
+    </div>
+    <div class="conflict-card">
+      <div class="conflict-header">
+        <div class="conflict-title">🟡 Amarelo × 🔵 Azul</div>
+        <span class="tension-badge tension-2">Média tensão</span>
+      </div>
+      <p class="conflict-desc">
+        Amarelo e Azul representam extremos opostos: um vive no impulso criativo e na espontaneidade,
+        o outro na análise cuidadosa e nos dados. O Amarelo acha o Azul frio demais e lento; o Azul 
+        acha o Amarelo superficial e irresponsável. No entanto, são complementares quando colaboram bem.
+      </p>
+      <div class="conflict-tip">
+        <strong>Dica:</strong> Separar etapas criativas das analíticas resolve boa parte da fricção.
+      </div>
+    </div>
+  </div>
+  <p class="result-pass">✓ Texto clampado em 5 linhas · Título com ellipsis · Dica com word-break</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">7 · Teia de Conexões — 30 pessoas (simulado)</div>
+  <div class="network-canvas-wrap" style="min-height:360px;position:relative">
+    <canvas id="stress-canvas" style="width:100%;height:100%;display:block"></canvas>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;pointer-events:none">
+      <div style="font-size:0.85rem;color:var(--text-muted);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 20px;text-align:center">
+        <div style="font-size:1.5rem;margin-bottom:8px">🕸️</div>
+        <strong>30 nós simulados</strong><br>
+        <span style="font-size:0.78rem">Raio reduz automaticamente · Labels truncados · Zoom habilitado</span>
+      </div>
+    </div>
+  </div>
+  <div class="network-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Vermelho — Direto</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Amarelo — Criativo</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Verde — Harmonioso</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Azul — Analítico</div>
+    <div class="legend-item" style="margin-left:auto;color:var(--text-dim);font-size:0.72rem">30 pessoas · Scroll para zoom · Arraste para mover</div>
+  </div>
+  <p class="result-pass">✓ Canvas fluido · Legenda com wrap · Info de contagem</p>
+</div>
+
+<div class="test-section">
+  <div class="test-label">8 · Modal — Nome longo + conteúdo extenso</div>
+  <div style="background:var(--bg-card);border:1px solid var(--border-bright);border-radius:var(--radius-lg);padding:32px;max-width:520px;max-height:420px;overflow-y:auto;position:relative">
+    <button class="btn-icon btn modal-close" style="position:absolute;top:16px;right:16px">✕</button>
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px">
+      <div style="font-size:2.5rem;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(224,82,82,0.15);border:2px solid var(--red)">🔴</div>
+      <div style="min-width:0;flex:1">
+        <h2 style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Alexandrina Beatriz Constantino de Magalhães</h2>
+        <div style="font-size:0.9rem;font-weight:600;margin-top:2px;color:var(--red)">Vermelho — Direto e Objetivo</div>
+      </div>
+    </div>
+    <p style="font-size:0.9rem;line-height:1.65;margin-bottom:20px;word-break:break-word">
+      Alexandrina é um exemplo perfeito do perfil Vermelho em sua forma mais pura: decisiva, implacável 
+      nos resultados e com uma capacidade única de simplificar problemas complexos em ações claras. 
+      Sua comunicação direta às vezes surpreende quem não a conhece, mas quem trabalha com ela sabe 
+      que não há agenda oculta — o que ela diz é exatamente o que ela quer dizer.
+    </p>
+    <div style="background:var(--bg-raised);border-radius:var(--radius);padding:16px;margin-bottom:20px">
+      <div class="section-title">Compatibilidade com você</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--green)">Excelente ✦✦✦✦</div>
+        <div style="font-size:1.1rem;letter-spacing:2px">★★★★</div>
+      </div>
+      <p style="font-size:0.85rem;margin-top:8px;word-break:break-word">
+        Dois Vermelhos juntos criam uma dinâmica de alta performance e competição saudável. 
+        O risco é a escalada de conflitos, mas quando alinhados, são imbatíveis.
+      </p>
+    </div>
+  </div>
+  <p class="result-pass">✓ Scroll interno · Nome com ellipsis · Texto com word-break</p>
+</div>
+
+<script>
+  const nomes = [
+    'Alexandrina Beatriz Constantino de Magalhães Ferreira',
+    'João Pedro',
+    'Maria Fernanda da Silva e Souza',
+    'Carlos',
+    'Andressa Gonçalves Teixeira Lima',
+    'Bia',
+    'Rodrigo Augusto Cavalcante Monteiro Pereira',
+    'Ana',
+    'Marcelo José Wanderley dos Santos',
+    'Lu',
+    'Stephanie Carvalho Nascimento Barbosa',
+    'Tom',
+    'Valentina',
+    'Gustavo Henrique Figueiredo de Azevedo',
+    'Pat',
+    'Isabella Cristina Rodrigues Mendonça da Fonseca',
+    'Zé',
+    'Rafaela',
+    'Diego Albuquerque',
+    'Conceição Maria Aparecida',
+  ];
+  const cores = [
+    { emoji: '🔴', cls: 'bg-V', border: 'var(--red)',    label: 'Vermelho', compat: 'Excelente', compatCls: 'bg-Ve color-Ve' },
+    { emoji: '🟡', cls: 'bg-A', border: 'var(--yellow)', label: 'Amarelo',  compat: 'Boa',       compatCls: 'bg-Az color-Az' },
+    { emoji: '🟢', cls: 'bg-Ve',border: 'var(--green)',  label: 'Verde',    compat: 'Desafiadora',compatCls: 'bg-V color-V' },
+    { emoji: '🔵', cls: 'bg-Az',border: 'var(--blue)',   label: 'Azul',     compat: 'Neutra',    compatCls: 'bg-A color-A' },
+  ];
+
+  const list = document.getElementById('stress-connections');
+  nomes.forEach((nome, i) => {
+    const c = cores[i % 4];
+    const item = document.createElement('div');
+    item.className = 'connection-item';
+    item.innerHTML = `
+      <div class="connection-avatar ${c.cls}" style="border-color:${c.border};color:#fff">${nome[0]}</div>
+      <div class="connection-info">
+        <div class="connection-name">${nome}</div>
+        <div class="connection-type">${c.emoji} ${c.label}</div>
+      </div>
+      <div class="connection-compat ${c.compatCls}">${c.compat}</div>
+    `;
+    list.appendChild(item);
+  });
+
+  const badge = document.getElementById('connections-count-badge');
+  if (badge) badge.textContent = `${nomes.length} conexões no total · Role para ver mais`;
+
+  const wrap = list.parentElement;
+  function checkFade() {
+    const canScroll = list.scrollHeight > list.clientHeight + 4;
+    const atBottom = list.scrollTop + list.clientHeight >= list.scrollHeight - 8;
+    wrap.classList.toggle('has-scroll', canScroll && !atBottom);
+  }
+  list.addEventListener('scroll', checkFade);
+  checkFade();
+</script>
+
+</body>
+</html>

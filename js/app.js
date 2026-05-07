@@ -70,9 +70,12 @@ function showDashTab(tab) {
     p.classList.toggle('active', p.id === 'tab-' + tab);
   });
   if (tab === 'network') {
+    if (network) network.onTabVisible(true);
     setTimeout(() => {
       if (network) network._resize();
     }, 100);
+  } else {
+    if (network) network.onTabVisible(false);
   }
 }
 
@@ -345,7 +348,7 @@ function renderConnectionsList(user, persons) {
     return `
       <div class="connection-item">
         <div class="connection-avatar" style="background:rgba(${pp.colorRgb},0.2);border-color:${pp.color};color:${pp.color}">${initials}</div>
-        <div>
+        <div class="connection-info">
           <div class="connection-name">${person.name}</div>
           <div class="connection-type">${pp.icon} ${pp.name}</div>
         </div>
