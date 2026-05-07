@@ -1,15 +1,5 @@
 <div align="center">
-
-<img src="logo.svg" alt="Persona" width="220"/>
-
-# Persona — Mapa de Perfis
-
-**Descubra sua cor de personalidade.**
-
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://joaodouglasdantas.github.io/Persona/)
-![Feito por diversão](https://img.shields.io/badge/feito%20por-divers%C3%A3o-blueviolet?style=flat-square)
-![HTML CSS JS](https://img.shields.io/badge/stack-HTML%20%2F%20CSS%20%2F%20JS-orange?style=flat-square)
-
+  <img src="logo.svg" alt="Persona" width="220"/>
 </div>
 
 ---
