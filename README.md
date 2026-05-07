@@ -51,30 +51,8 @@ open index.html
 
 ---
 
-## Estrutura
-
-```
-Persona/
-├── index.html          # Estrutura principal
-├── style.css           # Estilos e tema
-├── overflow-patch.js   # Patch de scroll
-├── js/
-│   ├── app.js          # Lógica principal e fluxo de telas
-│   ├── data.js         # Dados dos perfis, perguntas e compatibilidades
-│   └── network.js      # Visualização da teia de conexões (Canvas)
-└── Refs/               # Referências e análises dos perfis
-```
-
----
-
 ## Referência
 
 Baseado no conteúdo de **Vitor Santos** do canal Metaforando:
 
 ▶ [Os 4 Perfis de Comunicação Interpessoal](https://youtu.be/GyTIT7lg7wQ?si=fHYi8Akf4FjjkG2v)
-
----
-
-<div align="center">
-  <sub>Feito com curiosidade e café ☕ · Nenhuma psicologia foi prejudicada neste projeto.</sub>
-</div>
