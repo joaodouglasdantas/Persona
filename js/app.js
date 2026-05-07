@@ -1,6 +1,14 @@
 const STORE_MAIN    = 'persona_main';
 const STORE_PERSONS = 'persona_persons';
 
+function esc(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 let state = {
   view:            'welcome',
   dashTab:         'network',
@@ -304,12 +312,12 @@ function renderConnectionsList(user, persons) {
     const compat = getCompatibility(user.color, person.color);
     const compatColors = { 1: '#E05252', 2: '#D4A017', 3: '#3A87C8', 4: '#2EBC6E' };
     const compatColor = compatColors[compat.level] || '#888';
-    const initials = person.name.split(' ').slice(0,2).map(s => s[0]).join('').toUpperCase();
+    const initials = person.name.split(' ').slice(0,2).map(s => s[0] || '').join('').toUpperCase();
     return `
       <div class="connection-item">
-        <div class="connection-avatar" style="background:rgba(${pp.colorRgb},0.2);border-color:${pp.color};color:${pp.color}">${initials}</div>
+        <div class="connection-avatar" style="background:rgba(${pp.colorRgb},0.2);border-color:${pp.color};color:${pp.color}">${esc(initials)}</div>
         <div class="connection-info">
-          <div class="connection-name">${person.name}</div>
+          <div class="connection-name">${esc(person.name)}</div>
           <div class="connection-type">${pp.icon} ${pp.name}</div>
         </div>
         <span class="connection-compat" style="background:${compatColor}22;color:${compatColor}">${compat.label}</span>

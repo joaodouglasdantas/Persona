@@ -1585,3 +1585,19 @@ p  { color: var(--text-muted); }
 .direct-color-icon { font-size: 2.2rem; }
 .direct-color-name { font-size: 1rem; font-weight: 700; }
 .direct-color-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+#add-direct-name {
+  display: inline-block;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+@media (max-width: 380px) {
+  .direct-color-btn { padding: 14px 10px; }
+  .direct-color-icon { font-size: 1.8rem; }
+  .direct-color-name { font-size: 0.88rem; }
+  .direct-color-desc { display: none; }
+}
