@@ -275,7 +275,6 @@ class PersonaNetwork {
 
     ctx.save();
 
-    // Brilho (glow)
     if (hovered || selected || node.isMain) {
       const g = ctx.createRadialGradient(node.x, node.y, r * 0.3, node.x, node.y, r * 2.4);
       g.addColorStop(0, `rgba(${colorRgb}, 0.22)`);
@@ -286,7 +285,6 @@ class PersonaNetwork {
       ctx.fill();
     }
 
-    // Círculo principal
     const grad = ctx.createRadialGradient(node.x - r*0.3, node.y - r*0.3, 0, node.x, node.y, r);
     grad.addColorStop(0, color + 'FF');
     grad.addColorStop(1, color + 'BB');
@@ -295,12 +293,10 @@ class PersonaNetwork {
     ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
     ctx.fill();
 
-    // Borda
     ctx.strokeStyle = node.isMain ? 'rgba(255,255,255,0.85)' : color + 'AA';
     ctx.lineWidth   = node.isMain ? 2.5 : (hovered ? 2 : 1.5);
     ctx.stroke();
 
-    // Iniciais dentro do nó
     ctx.fillStyle    = '#fff';
     ctx.font         = `${node.isMain ? '700' : '600'} ${node.isMain ? 13 : 11}px -apple-system, sans-serif`;
     ctx.textAlign    = 'center';
@@ -308,7 +304,6 @@ class PersonaNetwork {
     const initials   = node.name.split(' ').slice(0, 2).map(s => s[0] || '').join('').toUpperCase();
     ctx.fillText(initials, node.x, node.y);
 
-    // Nome abaixo — truncado para caber no canvas
     const firstName   = node.name.split(' ')[0];
     const maxChars    = this.W < 400 ? 6 : 10;
     const displayName = firstName.length > maxChars
@@ -323,7 +318,7 @@ class PersonaNetwork {
   }
 
   _drawAxisLabels(ctx) {
-    if (this.W < 320) return; // muito pequeno, pula labels de eixo
+    if (this.W < 320) return;
     ctx.save();
     ctx.font      = '600 8px -apple-system, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,0.15)';
@@ -343,7 +338,6 @@ class PersonaNetwork {
     ctx.restore();
   }
 
-  // Contador de conexões no canto inferior direito
   _drawNodeCount(ctx) {
     const total = this.nodes.length;
     if (total === 0) return;
@@ -356,7 +350,6 @@ class PersonaNetwork {
     ctx.restore();
   }
 
-  // ── Animation Loop ─────────────────────────────────────────
 
   _startLoop() {
     if (this.animId) return;
@@ -378,13 +371,10 @@ class PersonaNetwork {
 
   stopLoop() { this._pauseLoop(); }
 
-  // Chamado quando o dashboard troca de aba
   onTabVisible(visible) {
     if (visible) this._resumeLoop();
     else this._pauseLoop();
   }
-
-  // ── Events ─────────────────────────────────────────────────
 
   _bindEvents() {
     this.canvas.addEventListener('mousemove', e => this._onMouseMove(e));
@@ -423,7 +413,6 @@ class PersonaNetwork {
         <div class="tooltip-type" style="color:${pd?.color || '#fff'}">${pd?.icon || ''} ${pd?.name || node.color}</div>
         ${node.isMain ? '<div class="tooltip-type" style="margin-top:4px">✦ Você</div>' : ''}
       `;
-      // Evita tooltip sair da tela
       const tx = Math.min(e.clientX + 14, window.innerWidth - 220);
       const ty = Math.max(e.clientY - 8, 8);
       this.tooltip.style.left = tx + 'px';

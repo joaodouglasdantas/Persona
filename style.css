@@ -811,6 +811,7 @@ p  { color: var(--text-muted); }
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative; /* adicione isso */
 }
 .explain-card-icon {
   font-size: 2rem;

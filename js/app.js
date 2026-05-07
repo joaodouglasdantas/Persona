@@ -1,33 +1,20 @@
-// ============================================================
-//  PERSONA — App Controller
-//  Gerencia views, testes, localStorage e fluxo do usuário
-// ============================================================
-
-// ── Storage Keys ──────────────────────────────────────────────
 const STORE_MAIN    = 'persona_main';
 const STORE_PERSONS = 'persona_persons';
 
-// ── State ─────────────────────────────────────────────────────
 let state = {
-  view:            'welcome',   // active view id
-  dashTab:         'network',   // active dashboard tab
-  testAnswers:     [],          // current test answer colors
-  currentQ:        0,           // current question index
-  shuffledQs:      [],          // shuffled questions for current test
-  // Add-person flow
-  addMode:         null,        // 'self' | 'other'
+  view:            'welcome',
+  dashTab:         'network',
+  testAnswers:     [],
+  currentQ:        0,
+  shuffledQs:      [],
+  addMode:         null,
   addName:         '',
   addAnswers:      [],
   addCurrentQ:     0,
-  addResultData:   null         // { scores, percentages, dominant }
+  addResultData:   null
 };
 
-// ── Network Instance ──────────────────────────────────────────
 let network = null;
-
-// ═══════════════════════════════════════════════════════════════
-//  STORAGE
-// ═══════════════════════════════════════════════════════════════
 
 function getMainUser()  { return JSON.parse(localStorage.getItem(STORE_MAIN) || 'null'); }
 function getPersons()   { return JSON.parse(localStorage.getItem(STORE_PERSONS) || '[]'); }
@@ -49,10 +36,6 @@ function resetAllData() {
   localStorage.removeItem(STORE_MAIN);
   localStorage.removeItem(STORE_PERSONS);
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  VIEW MANAGEMENT
-// ═══════════════════════════════════════════════════════════════
 
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -78,10 +61,6 @@ function showDashTab(tab) {
     if (network) network.onTabVisible(false);
   }
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  TEST FLOW (self)
-// ═══════════════════════════════════════════════════════════════
 
 function startSelfTest(name) {
   state.testName   = name.trim();
@@ -157,10 +136,6 @@ function finishSelfTest() {
   showResultScreen(user, result);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  RESULT SCREEN
-// ═══════════════════════════════════════════════════════════════
-
 function showResultScreen(user, result, isSelf = true) {
   const p = PERSONALITIES[result.dominant];
 
@@ -174,7 +149,6 @@ function showResultScreen(user, result, isSelf = true) {
   card.style.borderColor = p.color;
   card.style.background  = `rgba(${p.colorRgb}, 0.08)`;
 
-  // Bars
   const barsEl = document.getElementById('result-bars');
   barsEl.innerHTML = '';
   const sorted = Object.entries(result.percentages).sort((a, b) => b[1] - a[1]);
@@ -198,7 +172,6 @@ function showResultScreen(user, result, isSelf = true) {
 
   showView('result');
 
-  // Animate bars after a short delay
   setTimeout(() => {
     document.querySelectorAll('.result-bar-fill').forEach(el => {
       el.style.width = el.dataset.target + '%';
@@ -215,10 +188,6 @@ function onResultAction() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  DASHBOARD
-// ═══════════════════════════════════════════════════════════════
-
 function initDashboard() {
   const user    = getMainUser();
   const persons = getPersons();
@@ -227,7 +196,6 @@ function initDashboard() {
 
   const p = PERSONALITIES[user.color];
 
-  // Top bar
   document.getElementById('topbar-name').textContent    = user.name;
   document.getElementById('topbar-badge').textContent   = p.name;
   document.getElementById('topbar-badge').style.background  = `rgba(${p.colorRgb},0.2)`;
@@ -253,7 +221,6 @@ function initNetwork(user, persons) {
   }
   network.loadAll(user, persons);
 
-  // Empty state
   const emptyEl = document.getElementById('network-empty');
   if (emptyEl) emptyEl.style.display = persons.length === 0 ? 'flex' : 'none';
 }
@@ -295,10 +262,6 @@ function closeNodeModal() {
   document.getElementById('node-modal').classList.remove('open');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  PROFILE TAB
-// ═══════════════════════════════════════════════════════════════
-
 function renderProfileTab(user, persons) {
   const p = PERSONALITIES[user.color];
 
@@ -314,19 +277,16 @@ function renderProfileTab(user, persons) {
   card.style.borderColor  = p.color;
   card.style.background   = `rgba(${p.colorRgb},0.06)`;
 
-  // Strengths
   const strEl = document.getElementById('profile-strengths');
   strEl.innerHTML = p.strengths.map(s =>
     `<li><span class="trait-dot" style="background:${p.color}"></span>${s}</li>`
   ).join('');
 
-  // Challenges
   const chalEl = document.getElementById('profile-challenges');
   chalEl.innerHTML = p.challenges.map(c =>
     `<li><span class="trait-dot" style="background:#8888AA"></span>${c}</li>`
   ).join('');
 
-  // Connections list
   renderConnectionsList(user, persons);
 }
 
@@ -357,12 +317,7 @@ function renderConnectionsList(user, persons) {
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  EXPLAIN TAB
-// ═══════════════════════════════════════════════════════════════
-
 function renderExplainTab(user) {
-  // Personality cards
   const explainGrid = document.getElementById('explain-personalities');
   if (explainGrid) {
     explainGrid.innerHTML = Object.values(PERSONALITIES).map(p => `
@@ -373,8 +328,8 @@ function renderExplainTab(user) {
             <h3 style="color:${p.color}">${p.name}</h3>
             <div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px">${p.title}</div>
           </div>
-          ${user.color === p.id ? `<span style="margin-left:auto;font-size:0.72rem;background:rgba(${p.colorRgb},0.2);color:${p.color};padding:3px 10px;border-radius:10px;font-weight:700">SEU PERFIL</span>` : ''}
-        </div>
+          ${user.color === p.id ? `<span style="position:absolute;top:12px;right:12px;font-size:0.72rem;background:rgba(${p.colorRgb},0.2);color:${p.color};padding:3px 10px;border-radius:10px;font-weight:700">SEU PERFIL</span>` : ''}
+          </div>
         <div class="explain-card-body">
           <p>${p.description}</p>
         </div>
@@ -382,7 +337,6 @@ function renderExplainTab(user) {
     `).join('');
   }
 
-  // Conflicts
   const conflictsEl = document.getElementById('explain-conflicts');
   if (conflictsEl) {
     conflictsEl.innerHTML = CONFLICTS.map(c => {
@@ -400,7 +354,6 @@ function renderExplainTab(user) {
     }).join('');
   }
 
-  // Compatibility matrix
   const matrixEl = document.getElementById('explain-matrix');
   if (matrixEl) {
     const pKeys = ['V', 'A', 'Ve', 'Az'];
@@ -450,10 +403,6 @@ function closeExplainModal() {
   document.getElementById('explain-modal').classList.remove('open');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  ADD PERSON FLOW
-// ═══════════════════════════════════════════════════════════════
-
 function startAddPerson() {
   state.addMode     = null;
   state.addName     = '';
@@ -461,7 +410,6 @@ function startAddPerson() {
   state.addCurrentQ = 0;
   state.addResultData = null;
 
-  // Reset UI
   document.getElementById('add-name-input').value = '';
   document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('add-start-btn').disabled = true;
@@ -567,7 +515,6 @@ function finishAddTest() {
   const mainUser = getMainUser();
   const compat   = mainUser ? getCompatibility(mainUser.color, result.dominant) : null;
 
-  // Update result screen
   document.getElementById('add-result-name').textContent = state.addName;
   document.getElementById('add-result-icon').textContent = p.icon;
   document.getElementById('add-result-color').textContent = p.name + ' · ' + p.title;
@@ -603,7 +550,6 @@ function confirmAddPerson() {
   addPersonToStore(person);
   showToast(`${person.name} adicionado à sua teia! ${PERSONALITIES[person.color].icon}`);
 
-  // Go back to dashboard and refresh
   const user = getMainUser();
   const persons = getPersons();
   if (network) network.addPerson(person);
@@ -612,7 +558,6 @@ function confirmAddPerson() {
   showView('dashboard');
   showDashTab('network');
 
-  // Hide empty state
   const emptyEl = document.getElementById('network-empty');
   if (emptyEl) emptyEl.style.display = 'none';
 }
@@ -621,10 +566,6 @@ function goBackToDashboard() {
   showView('dashboard');
   showDashTab(state.dashTab);
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  REMOVE PERSON
-// ═══════════════════════════════════════════════════════════════
 
 function removePerson(id) {
   removePersonFromStore(id);
@@ -641,10 +582,6 @@ function removePerson(id) {
   showToast('Conexão removida.');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  TOAST
-// ═══════════════════════════════════════════════════════════════
-
 let toastTimer = null;
 function showToast(msg, icon = '✦') {
   const t = document.getElementById('toast');
@@ -654,10 +591,6 @@ function showToast(msg, icon = '✦') {
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  RESET
-// ═══════════════════════════════════════════════════════════════
 
 function resetApp() {
   if (!confirm('Tem certeza? Todos os dados serão apagados.')) return;
@@ -672,21 +605,15 @@ function resetApp() {
   showView('welcome');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════════════════
-
 document.addEventListener('DOMContentLoaded', () => {
   const mainUser = getMainUser();
 
   if (mainUser) {
-    // Returning user → go straight to dashboard
     initDashboard();
   } else {
     showView('welcome');
   }
 
-  // ── Welcome ──────────────────────────────────────────────
   document.getElementById('welcome-start-btn').addEventListener('click', () => {
     const name = document.getElementById('welcome-name').value.trim();
     if (!name) {
@@ -701,18 +628,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') document.getElementById('welcome-start-btn').click();
   });
 
-  // ── Test ─────────────────────────────────────────────────
   document.getElementById('test-next-btn').addEventListener('click', advanceSelfTest);
 
-  // ── Result ───────────────────────────────────────────────
   document.getElementById('result-action-btn').addEventListener('click', onResultAction);
 
-  // ── Dashboard Tabs ────────────────────────────────────────
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => showDashTab(btn.dataset.tab));
   });
 
-  // ── Add Person ────────────────────────────────────────────
   document.getElementById('dash-add-btn').addEventListener('click', startAddPerson);
 
   document.getElementById('add-back-btn').addEventListener('click', goBackToDashboard);
@@ -733,7 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-confirm-btn').addEventListener('click', confirmAddPerson);
   document.getElementById('add-cancel-btn').addEventListener('click', goBackToDashboard);
 
-  // ── Modal close ───────────────────────────────────────────
   document.getElementById('node-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('node-modal')) closeNodeModal();
   });
@@ -749,6 +671,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirm('Remover esta conexão da teia?')) removePerson(id);
   });
 
-  // ── Reset ─────────────────────────────────────────────────
   document.getElementById('reset-btn').addEventListener('click', resetApp);
 });

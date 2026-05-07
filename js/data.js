@@ -1,8 +1,3 @@
-// ============================================================
-//  PERSONA — Data Layer
-//  Baseado nos 4 Perfis de Comunicação de Vitor Santos (Metaforando)
-// ============================================================
-
 const PERSONALITIES = {
   V: {
     id: 'V',
@@ -22,7 +17,7 @@ const PERSONALITIES = {
     motivations: 'Poder, resultados concretos, eficiência e conquistas mensuráveis.',
     fears: 'Perda de controle, ineficiência e dependência de outros.',
     zoneLabel: 'RÁPIDO · TAREFA',
-    quadrant: { xSign: -1, ySign: -1 }  // top-left
+    quadrant: { xSign: -1, ySign: -1 }
   },
   A: {
     id: 'A',
@@ -42,7 +37,7 @@ const PERSONALITIES = {
     motivations: 'Reconhecimento social, criatividade, novidades e interação constante com pessoas.',
     fears: 'Isolamento, rejeição e ambientes rígidos sem espaço para criatividade.',
     zoneLabel: 'RÁPIDO · PESSOAS',
-    quadrant: { xSign: 1, ySign: -1 }   // top-right
+    quadrant: { xSign: 1, ySign: -1 }
   },
   Ve: {
     id: 'Ve',
@@ -62,7 +57,7 @@ const PERSONALITIES = {
     motivations: 'Harmonia, segurança emocional, relações próximas e bem-estar do grupo.',
     fears: 'Conflitos diretos, mudanças bruscas e ambientes hostis ou instáveis.',
     zoneLabel: 'LENTO · PESSOAS',
-    quadrant: { xSign: 1, ySign: 1 }    // bottom-right
+    quadrant: { xSign: 1, ySign: 1 }
   },
   Az: {
     id: 'Az',
@@ -82,11 +77,10 @@ const PERSONALITIES = {
     motivations: 'Qualidade, precisão, estrutura clara e resolução lógica de problemas complexos.',
     fears: 'Erros, imprecisões, caos e falta de planejamento.',
     zoneLabel: 'LENTO · TAREFA',
-    quadrant: { xSign: -1, ySign: 1 }   // bottom-left
+    quadrant: { xSign: -1, ySign: 1 }
   }
 };
 
-// ── Conflitos (pares opostos no modelo) ──────────────────────
 const CONFLICTS = [
   {
     pair: ['V', 'Ve'],
@@ -138,7 +132,6 @@ const CONFLICTS = [
   }
 ];
 
-// ── Afinidades e compatibilidade ─────────────────────────────
 const COMPATIBILITY = {
   V: {
     V:  { level: 2, label: 'Competitivo',  desc: 'Dois Vermelhos podem ser uma dupla explosiva de resultados, mas precisam negociar liderança para não colidir.' },
@@ -165,11 +158,6 @@ const COMPATIBILITY = {
     Az: { level: 2, label: 'Meticuloso',   desc: 'Dois Azuis produzem com alta qualidade, mas podem ser lentos por excesso de análise.' }
   }
 };
-
-// ── 15 Perguntas do Teste ─────────────────────────────────────
-// stemSelf: para o próprio usuário
-// stemOther: para responder sobre outra pessoa ({name} é substituído)
-// options: escritas em infinitivo (funcionam para ambas perspectivas)
 
 const QUESTIONS = [
   {
@@ -339,9 +327,6 @@ const QUESTIONS = [
   }
 ];
 
-// ── Utilitários ───────────────────────────────────────────────
-
-/** Embaralha as opções de todas as perguntas (aleatoriza) */
 function shuffleOptions(questions) {
   return questions.map(q => ({
     ...q,
@@ -349,7 +334,6 @@ function shuffleOptions(questions) {
   }));
 }
 
-/** Calcula o perfil dominante a partir das respostas */
 function calculatePersonality(answers) {
   const scores = { V: 0, A: 0, Ve: 0, Az: 0 };
   answers.forEach(color => scores[color]++);
@@ -362,12 +346,10 @@ function calculatePersonality(answers) {
   return { scores, percentages, dominant };
 }
 
-/** Retorna uma descrição de compatibilidade entre dois perfis */
 function getCompatibility(colorA, colorB) {
   return COMPATIBILITY[colorA]?.[colorB] || { level: 2, label: 'Neutro', desc: 'Relacionamento neutro.' };
 }
 
-/** Gera um ID único simples */
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
