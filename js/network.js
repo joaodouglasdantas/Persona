@@ -55,6 +55,7 @@ class PersonaNetwork {
 
     this.canvas.style.width  = w + 'px';
     this.canvas.style.height = h + 'px';
+    wrap.style.height = h + 'px';
     this.canvas.width  = Math.round(w * this.dpr);
     this.canvas.height = Math.round(h * this.dpr);
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -346,7 +347,7 @@ class PersonaNetwork {
     ctx.font      = '500 10px -apple-system, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,0.22)';
     ctx.textAlign = 'right';
-    ctx.fillText(txt, this.W - 12, this.H - 8);
+    ctx.fillText(txt, this.W - 12, 28);
     ctx.restore();
   }
 
