@@ -145,16 +145,26 @@ class PersonaNetwork {
 
   loadAll(mainUser, persons) {
     this.nodes = []; this.mainNode = null;
-    if (mainUser) this.setMainUser(mainUser);
+    if (mainUser) {
+      this.mainNode = {
+        id: mainUser.id, name: mainUser.name, color: mainUser.color,
+        x: 0, y: 0, vx: 0, vy: 0, r: 26, isMain: true
+      };
+    }
     persons.forEach(p => {
       this.nodes.push({
         id: p.id, name: p.name, color: p.color,
         x: 0, y: 0, vx: 0, vy: 0, r: 18, isMain: false
       });
     });
-    this._resize();
-    this._layout();
-    this._draw();
+    // rAF garante que o DOM ja tem dimensoes reais antes de renderizar
+    const render = () => {
+      this._resize();
+      if (this.mainNode) { this.mainNode.x = this.cx; this.mainNode.y = this.cy; }
+      this._layout();
+      this._draw();
+    };
+    requestAnimationFrame(render);
   }
 
   removePerson(id) {
