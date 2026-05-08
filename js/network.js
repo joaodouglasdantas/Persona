@@ -49,11 +49,11 @@ class PersonaNetwork {
     const n = this.nodes.length;
     const r = this._nodeRadius();
     return {
-      repulsion:  3500 + n * 200,
-      zoneForce:  Math.max(0.006, 0.024 - n * 0.0007),
-      damping:    0.78,
-      speedCap:   5,
-      minDist:    r * 2 + 22 + Math.min(n * 0.8, 28)
+      repulsion:  2600 + n * 140,
+      zoneForce:  Math.max(0.018, 0.034 - n * 0.0004),
+      damping:    0.80,
+      speedCap:   4,
+      minDist:    r * 2 + 18 + Math.min(n * 0.5, 18)
     };
   }
 
@@ -152,11 +152,21 @@ class PersonaNetwork {
       const n = allNodes[i];
       if (n.isMain) continue;
 
-      // Gravidade em direção ao centro da zona
+      // Gravidade em direção ao centro da zona — força cresce com a distância
       const zone = this.zoneCenters[n.color];
       if (zone) {
-        n.vx += (zone.x - n.x) * zoneForce;
-        n.vy += (zone.y - n.y) * zoneForce;
+        const zdx  = zone.x - n.x;
+        const zdy  = zone.y - n.y;
+        const zdist = Math.sqrt(zdx * zdx + zdy * zdy) + 1;
+        const pull  = zoneForce * (1 + zdist / 70); // não-linear: mais longe = puxa mais
+        n.vx += zdx * pull;
+        n.vy += zdy * pull;
+
+        // Barreira suave de quadrante: empurra de volta se cruzar o eixo errado
+        const wrongX = (zone.x > this.cx) ? (n.x < this.cx) : (n.x > this.cx);
+        const wrongY = (zone.y > this.cy) ? (n.y < this.cy) : (n.y > this.cy);
+        if (wrongX) n.vx += (zone.x > this.cx ? 1 : -1) * Math.abs(n.x - this.cx) * 0.06;
+        if (wrongY) n.vy += (zone.y > this.cy ? 1 : -1) * Math.abs(n.y - this.cy) * 0.06;
       }
 
       // Repulsão entre nós
