@@ -1,8 +1,3 @@
-// ============================================================
-//  PERSONA — Network Visualization (Canvas)
-//  v6 — layout em grade determinístico, sem física
-// ============================================================
-
 class PersonaNetwork {
   constructor(canvas) {
     this.canvas   = canvas;
@@ -30,12 +25,10 @@ class PersonaNetwork {
     window.addEventListener('resize', () => { this._resize(); this._layout(); this._draw(); });
   }
 
-  // ── Dimensoes ─────────────────────────────────────────────
   _fixedHeight(w) {
     return Math.max(360, Math.min(Math.round(w * 0.85), 520));
   }
 
-  // Mundo virtual: apenas para zoom de qualidade (nao para fisica)
   _worldScale() {
     const n = this.nodes.length;
     if (n <= 10) return 1.0;
@@ -55,7 +48,6 @@ class PersonaNetwork {
     }
   }
 
-  // Raio calculado pela celula da grade do quadrante mais cheio
   _nodeRadius() {
     if (!this.nodes.length) return 18;
     const counts = { V: 0, A: 0, Ve: 0, Az: 0 };
@@ -63,12 +55,11 @@ class PersonaNetwork {
     const maxInQ = Math.max(...Object.values(counts), 1);
     const cols = Math.ceil(Math.sqrt(maxInQ));
     const rows = Math.ceil(maxInQ / cols);
-    const cellW = (this.W / 2) / cols;
-    const cellH = (this.H / 2) / rows;
-    return Math.max(8, Math.min(28, Math.round(Math.min(cellW, cellH) * 0.40)));
+    const cellW = (this.W / 2) / (cols + 0.5);
+    const cellH = (this.H / 2) / (rows + 0.5);
+    return Math.max(8, Math.min(26, Math.floor(Math.min(cellW, cellH) * 0.38)));
   }
 
-  // ── Layout em grade — posiciona todos os nos ──────────────
   _layout() {
     const r = this._nodeRadius();
     this.nodes.forEach(n => { n.r = r; });
@@ -83,28 +74,34 @@ class PersonaNetwork {
       const count = group.length;
       const cols  = Math.ceil(Math.sqrt(count));
       const rows  = Math.ceil(count / cols);
-      const pad   = r + 10;
+      const pad   = r + 16;
+      const labelH = 14;
+
       const innerW = b.right  - b.left - pad * 2;
-      const innerH = b.bottom - b.top  - pad * 2;
-      const stepX  = cols > 1 ? innerW / (cols - 1) : 0;
-      const stepY  = rows > 1 ? innerH / (rows - 1) : 0;
+      const innerH = b.bottom - b.top  - pad * 2 - labelH;
+
+      const stepX = cols > 1 ? innerW / (cols - 1) : innerW / 2;
+      const stepY = rows > 1 ? innerH / (rows - 1) : innerH / 2;
 
       group.forEach((node, i) => {
         const col = i % cols;
         const row = Math.floor(i / cols);
 
-        // Centraliza a ultima linha se incompleta
-        const itemsInRow  = (row === rows - 1) ? count - row * cols : cols;
-        const rowOffsetX  = (cols - itemsInRow) * (cols > 1 ? stepX : 0) / 2;
+        const itemsInRow = (row === rows - 1) ? count - row * cols : cols;
+        const rowOffsetX = cols > 1
+          ? (cols - itemsInRow) * stepX / 2
+          : 0;
 
-        node.x = b.left + pad + col * stepX + rowOffsetX;
-        node.y = b.top  + pad + row * stepY;
+        const startX = cols === 1 ? (b.left + b.right) / 2 : b.left + pad + col * stepX + rowOffsetX;
+        const startY = rows === 1 ? (b.top + b.bottom) / 2 - labelH / 2 : b.top + pad + row * stepY;
+
+        node.x = cols === 1 ? startX : b.left + pad + col * stepX + rowOffsetX;
+        node.y = startY;
         node.vx = 0; node.vy = 0;
       });
     }
   }
 
-  // ── Gerenciamento de nos ──────────────────────────────────
   _resize() {
     const wrap = this.canvas.parentElement;
     const cw   = wrap.clientWidth || 360;
@@ -124,7 +121,6 @@ class PersonaNetwork {
     this.cx = this.W / 2; this.cy = this.H / 2;
     this.baseZoom = 1 / ws;
 
-    // Se ja ha dados, relayoutar e redesenhar
     if (this.mainNode) {
       this.mainNode.x = this.cx;
       this.mainNode.y = this.cy;
@@ -165,7 +161,6 @@ class PersonaNetwork {
         x: 0, y: 0, vx: 0, vy: 0, r: 18, isMain: false
       });
     });
-    // rAF garante que o DOM ja tem dimensoes reais antes de renderizar
     const render = () => {
       this._resize();
       if (this.mainNode) { this.mainNode.x = this.cx; this.mainNode.y = this.cy; }
@@ -182,7 +177,6 @@ class PersonaNetwork {
     this._draw();
   }
 
-  // ── Renderizacao ──────────────────────────────────────────
   _totalScale() { return this.baseZoom * this.zoom; }
 
   _draw() {
@@ -301,18 +295,15 @@ class PersonaNetwork {
     ctx.restore();
   }
 
-  // Compatibilidade com chamadas do app.js
   stopLoop() { /* sem loop */ }
   onTabVisible(v) {
     if (v) {
-      // Aba ficou visivel: re-renderizar com dimensoes reais
       requestAnimationFrame(() => {
-        this._resize(); // _resize ja chama _layout e _draw internamente
+        this._resize();
       });
     }
   }
 
-  // ── Interacao ─────────────────────────────────────────────
   _bindEvents() {
     this.canvas.addEventListener('mousemove',  e => this._onMouseMove(e));
     this.canvas.addEventListener('mouseleave', () => this._onMouseLeave());

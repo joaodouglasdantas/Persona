@@ -553,12 +553,10 @@ function selectDirectColor(colorKey) {
   const p = PERSONALITIES[colorKey];
   if (!p) return;
 
-  // Destaca o botão selecionado
   document.querySelectorAll('.direct-color-btn').forEach(b => b.classList.remove('selected'));
   const btn = document.querySelector(`.direct-color-btn[data-color="${colorKey}"]`);
   if (btn) btn.classList.add('selected');
 
-  // Monta resultado sintético com 100% para a cor escolhida
   const scores      = { V: 0, A: 0, Ve: 0, Az: 0 };
   const percentages = { V: 0, A: 0, Ve: 0, Az: 0 };
   scores[colorKey]      = 1;
@@ -566,7 +564,6 @@ function selectDirectColor(colorKey) {
 
   state.addResultData = { dominant: colorKey, scores, percentages };
 
-  // Preenche a tela de resultado
   const mainUser = getMainUser();
   const compat   = mainUser ? getCompatibility(mainUser.color, colorKey) : null;
 
