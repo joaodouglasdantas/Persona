@@ -123,6 +123,14 @@ class PersonaNetwork {
     this.W = cw * ws; this.H = ch * ws;
     this.cx = this.W / 2; this.cy = this.H / 2;
     this.baseZoom = 1 / ws;
+
+    // Se ja ha dados, relayoutar e redesenhar
+    if (this.mainNode) {
+      this.mainNode.x = this.cx;
+      this.mainNode.y = this.cy;
+      this._layout();
+      this._draw();
+    }
   }
 
   setMainUser(user) {
@@ -294,8 +302,15 @@ class PersonaNetwork {
   }
 
   // Compatibilidade com chamadas do app.js
-  stopLoop()       { /* sem loop */ }
-  onTabVisible(_v) { /* sem loop */ }
+  stopLoop() { /* sem loop */ }
+  onTabVisible(v) {
+    if (v) {
+      // Aba ficou visivel: re-renderizar com dimensoes reais
+      requestAnimationFrame(() => {
+        this._resize(); // _resize ja chama _layout e _draw internamente
+      });
+    }
+  }
 
   // ── Interacao ─────────────────────────────────────────────
   _bindEvents() {
