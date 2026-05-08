@@ -738,13 +738,10 @@ p  { color: var(--text-muted); }
 .connection-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  background: var(--bg-raised);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  min-width: 0;
+  gap: 10px;
+  min-height: 52px;
   overflow: hidden;
+  padding: 8px 12px;
 }
 .connection-avatar {
   width: 32px; height: 32px;
@@ -763,18 +760,15 @@ p  { color: var(--text-muted); }
   overflow: hidden;
 }
 .connection-name {
-  font-weight: 600;
-  font-size: 0.9rem;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .connection-type {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.78rem;
 }
 .connection-compat {
   margin-left: auto;
