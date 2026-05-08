@@ -324,6 +324,61 @@ const QUESTIONS = [
       { text: "\"O que realmente importa são as relações que construímos e o bem que fazemos.\"", color: "Ve" },
       { text: "\"A excelência está nos detalhes. Fazer bem-feito é o único jeito que conheço.\"", color: "Az" }
     ]
+  },
+  {
+    id: 16,
+    stemSelf: "Quando você tem um final de semana completamente livre, sem compromissos, o que você faz?",
+    stemOther: "Quando {name} tem um final de semana completamente livre, sem compromissos, o que costuma fazer?",
+    options: [
+      { text: "Aproveita para resolver pendências, otimizar algo ou avançar em um objetivo pessoal.", color: "V" },
+      { text: "Liga para amigos, planeja um programa espontâneo ou experimenta algo novo.", color: "A" },
+      { text: "Fica em casa, cuida das pessoas que ama e recarrega as energias com calma.", color: "Ve" },
+      { text: "Segue uma rotina planejada — leitura, estudo, organização — algo com propósito claro.", color: "Az" }
+    ]
+  },
+  {
+    id: 17,
+    stemSelf: "Quando você termina de assistir um filme marcante, o que você faz a seguir?",
+    stemOther: "Quando {name} termina de assistir um filme marcante, o que costuma fazer a seguir?",
+    options: [
+      { text: "Já passa para o próximo — gostou, mas não fica elaborando muito.", color: "V" },
+      { text: "Manda mensagem para alguém para comentar, compartilhar e discutir.", color: "A" },
+      { text: "Fica com o sentimento por um tempo, talvez compartilhe com quem estava junto.", color: "Ve" },
+      { text: "Pesquisa mais sobre o filme, lê análises e quer entender todas as camadas.", color: "Az" }
+    ]
+  },
+  {
+    id: 18,
+    stemSelf: "Quando você vai presentear alguém que gosta muito, como você escolhe o presente?",
+    stemOther: "Quando {name} vai presentear alguém que gosta muito, como costuma escolher o presente?",
+    options: [
+      { text: "Escolhe algo prático e útil — que faça diferença real na vida da pessoa.", color: "V" },
+      { text: "Busca algo criativo e inusitado que conte uma história — algo para lembrar.", color: "A" },
+      { text: "Pensa muito no que a pessoa sente falta ou sonha ter — foco total em agradar.", color: "Ve" },
+      { text: "Pesquisa bastante, compara opções e só decide quando tem certeza da melhor escolha.", color: "Az" }
+    ]
+  },
+  {
+    id: 19,
+    stemSelf: "Como você costuma usar as redes sociais no dia a dia?",
+    stemOther: "Como {name} costuma usar as redes sociais no dia a dia?",
+    options: [
+      { text: "Consome conteúdo útil e acompanha tendências — foco no que agrega valor.", color: "V" },
+      { text: "Adora compartilhar, comentar e interagir — é uma extensão da vida social.", color: "A" },
+      { text: "Usa com moderação, prefere grupos privados e conversas diretas com quem é próximo.", color: "Ve" },
+      { text: "Segue perfis de conteúdo de qualidade e raramente posta — prefere consumir e refletir.", color: "Az" }
+    ]
+  },
+  {
+    id: 20,
+    stemSelf: "Quando um amigo próximo te pede conselho sobre um problema pessoal, você:",
+    stemOther: "Quando um amigo próximo pede conselho a {name} sobre um problema pessoal, a reação costuma ser:",
+    options: [
+      { text: "Vai direto ao ponto — apresenta a solução mais objetiva e prática que enxerga.", color: "V" },
+      { text: "Escuta com entusiasmo, compartilha experiências parecidas e oferece perspectivas animadoras.", color: "A" },
+      { text: "Ouve tudo com cuidado e valida o sentimento da pessoa antes de qualquer sugestão.", color: "Ve" },
+      { text: "Faz perguntas para entender bem a situação antes de opinar com embasamento.", color: "Az" }
+    ]
   }
 ];
 
