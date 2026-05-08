@@ -26,24 +26,34 @@ class PersonaNetwork {
     });
   }
 
+  // ── Raio dinâmico por quantidade de nós ───────────────────
+  _nodeRadius() {
+    const n = this.nodes.length;
+    if (n <= 8)  return 18;
+    if (n <= 16) return 16;
+    if (n <= 25) return 13;
+    return 11;
+  }
+
   // ── Altura dinâmica ────────────────────────────────────────
   _calcHeight(w) {
     const n = this.nodes.length;
-    if (n <= 8)  return Math.max(400, Math.min(w * 0.60, 520));
-    if (n <= 16) return Math.max(480, Math.min(w * 0.68, 620));
-    if (n <= 30) return Math.max(560, Math.min(w * 0.75, 720));
-    return Math.max(640, Math.min(w * 0.82, 840));   // 30+ nós
+    if (n <= 8)  return Math.max(400, Math.min(w * 0.75, 540));
+    if (n <= 16) return Math.max(500, Math.min(w * 0.95, 660));
+    if (n <= 30) return Math.max(620, Math.min(w * 1.15, 820));
+    return Math.max(740, Math.min(w * 1.30, 960));
   }
 
   // ── Física dinâmica por quantidade de nós ──────────────────
   _physicsParams() {
     const n = this.nodes.length;
+    const r = this._nodeRadius();
     return {
-      repulsion:  2800 + n * 120,   // mais nós → mais repulsão
-      zoneForce:  Math.max(0.010, 0.028 - n * 0.0005),
-      damping:    0.80,
-      speedCap:   4,
-      minDist:    76 + Math.min(n * 1.5, 40)
+      repulsion:  3500 + n * 200,
+      zoneForce:  Math.max(0.006, 0.024 - n * 0.0007),
+      damping:    0.78,
+      speedCap:   5,
+      minDist:    r * 2 + 22 + Math.min(n * 0.8, 28)
     };
   }
 
@@ -65,6 +75,10 @@ class PersonaNetwork {
     this.H  = h;
     this.cx = w / 2;
     this.cy = h / 2;
+
+    // Atualiza raio de todos os nós conforme nova contagem
+    const r = this._nodeRadius();
+    this.nodes.forEach(n => { n.r = r; });
 
     // Quadrant zone centers — inset 62/60% from center
     const qx = this.cx * 0.62;
@@ -94,14 +108,14 @@ class PersonaNetwork {
   }
 
   addPerson(person) {
-    // Calcula quantos nós já estão nesta zona para dispersar em espiral
     const sameZone = this.nodes.filter(n => n.color === person.color).length;
     const zone = this.zoneCenters[person.color] || { x: this.cx, y: this.cy };
 
-    // Espiral: cada nó novo na mesma zona vai ligeiramente mais longe e rotacionado
-    const baseAngle = (sameZone * 137.5 * Math.PI / 180); // ângulo áureo
-    const dist = 55 + sameZone * 18;
-    const angle = baseAngle + (Math.random() - 0.5) * 0.4;
+    // Espiral com distância máxima limitada ao quadrante disponível
+    const baseAngle = (sameZone * 137.5 * Math.PI / 180);
+    const maxDist   = Math.min(this.cx, this.cy) * 0.60;
+    const dist      = Math.min(40 + sameZone * 14, maxDist);
+    const angle     = baseAngle + (Math.random() - 0.5) * 0.4;
 
     this.nodes.push({
       id: person.id, name: person.name, color: person.color,
@@ -109,10 +123,9 @@ class PersonaNetwork {
       y: zone.y + Math.sin(angle) * dist,
       vx: (Math.random() - 0.5) * 0.8,
       vy: (Math.random() - 0.5) * 0.8,
-      r: 18, isMain: false
+      r: this._nodeRadius(), isMain: false
     });
 
-    // Recalcula canvas height quando adicionamos nós
     this._resize();
     if (!this.animId) this._startLoop();
   }
@@ -306,14 +319,15 @@ class PersonaNetwork {
     ctx.fillText(initials, node.x, node.y);
 
     const firstName   = node.name.split(' ')[0];
-    const maxChars    = this.W < 400 ? 6 : 10;
+    const maxChars    = r <= 12 ? 5 : (this.W < 400 ? 6 : 10);
     const displayName = firstName.length > maxChars
       ? firstName.slice(0, maxChars) + '…'
       : firstName;
 
+    const labelSize = r <= 12 ? 8 : (this.W < 400 ? 9 : 10);
     ctx.fillStyle = hovered ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.52)';
-    ctx.font      = `${hovered ? '600' : '400'} ${this.W < 400 ? 9 : 10}px -apple-system, sans-serif`;
-    ctx.fillText(displayName, node.x, node.y + r + 12);
+    ctx.font      = `${hovered ? '600' : '400'} ${labelSize}px -apple-system, sans-serif`;
+    ctx.fillText(displayName, node.x, node.y + r + 11);
 
     ctx.restore();
   }
