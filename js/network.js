@@ -1,6 +1,6 @@
 // ============================================================
 //  PERSONA — Network Visualization (Canvas)
-//  v5 — paredes de fronteira por quadrante (nós se espalham)
+//  v5b — nos fixos apos assentar, sem textos de UI
 // ============================================================
 
 class PersonaNetwork {
@@ -15,15 +15,11 @@ class PersonaNetwork {
     this.selectedNode = null;
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    // Canvas (fixo — o que o usuario ve)
     this.canvasW = 0;
     this.canvasH = 0;
-
-    // Mundo virtual (onde a fisica roda — maior que o canvas)
     this.W  = 0; this.H  = 0;
     this.cx = 0; this.cy = 0;
 
-    // Zoom / pan (dentro do canvas fixo)
     this.zoom  = 1;
     this.panX  = 0;
     this.panY  = 0;
@@ -35,6 +31,7 @@ class PersonaNetwork {
     this._dragStart   = null;
     this._isDragging  = false;
     this._lastWorldScale = 1;
+    this._settleFrames   = 0;
 
     this._bindEvents();
     this._resize();
@@ -42,16 +39,14 @@ class PersonaNetwork {
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) this._pauseLoop();
-      else if (this.mainNode || this.nodes.length) this._resumeLoop();
+      else if (this._settleFrames > 0) this._resumeLoop();
     });
   }
 
-  // ── Canvas fixo ────────────────────────────────────────────
   _fixedHeight(w) {
     return Math.max(360, Math.min(Math.round(w * 0.85), 520));
   }
 
-  // ── Fator de expansao do mundo virtual ────────────────────
   _worldScale() {
     const n = this.nodes.length;
     if (n <= 6)  return 1.0;
@@ -61,42 +56,34 @@ class PersonaNetwork {
     return 2.8;
   }
 
-  // ── Raio do no baseado no mundo virtual ───────────────────
   _nodeRadius() {
     if (!this.W || !this.H || !this.nodes.length) return 18;
     const counts = { V: 0, A: 0, Ve: 0, Az: 0 };
     this.nodes.forEach(n => { if (n.color in counts) counts[n.color]++; });
     const maxInQ = Math.max(...Object.values(counts), 1);
     const ws = this._worldScale();
-    // Area disponivel por no no quadrante mais cheio
     const areaPerNode = (this.W / 2) * (this.H / 2) / maxInQ;
     const r = Math.sqrt(areaPerNode / Math.PI) * 0.34;
-    // Garantir tamanho minimo de ~13px na tela independente do zoom
-    const minR = 13 * ws;
-    const maxR = 22 * ws;
-    return Math.max(minR, Math.min(maxR, Math.round(r)));
+    return Math.max(13 * ws, Math.min(22 * ws, Math.round(r)));
   }
 
-  // ── Limites de cada quadrante no mundo virtual ─────────────
   _quadrantBounds(color) {
     const { cx, cy, W, H } = this;
-    const edge = 18; // margem da borda do canvas
+    const edge = 18;
     switch (color) {
-      case 'V':  return { left: edge, right: cx,    top: edge, bottom: cy    };
-      case 'A':  return { left: cx,   right: W-edge, top: edge, bottom: cy   };
+      case 'V':  return { left: edge, right: cx,     top: edge, bottom: cy     };
+      case 'A':  return { left: cx,   right: W-edge, top: edge, bottom: cy     };
       case 'Ve': return { left: cx,   right: W-edge, top: cy,   bottom: H-edge };
-      case 'Az': return { left: edge, right: cx,    top: cy,   bottom: H-edge };
+      case 'Az': return { left: edge, right: cx,     top: cy,   bottom: H-edge };
       default:   return null;
     }
   }
 
-  // ── Parametros de fisica ───────────────────────────────────
   _physicsParams() {
     const n  = this.nodes.length;
     const r  = this._nodeRadius();
     const ws = this._worldScale();
     return {
-      // Repulsao escala com area do mundo (ws²)
       repulsion: (2800 + n * 200) * ws * ws,
       damping:   0.80,
       speedCap:  5 * ws,
@@ -105,13 +92,11 @@ class PersonaNetwork {
     };
   }
 
-  // ── Setup / resize ─────────────────────────────────────────
   _resize() {
     const wrap = this.canvas.parentElement;
     const cw = wrap.clientWidth || 360;
     const ch = this._fixedHeight(cw);
 
-    // Canvas fisico — tamanho fixo
     this.canvas.style.width  = cw + 'px';
     this.canvas.style.height = ch + 'px';
     wrap.style.height = ch + 'px';
@@ -123,17 +108,13 @@ class PersonaNetwork {
     this.canvasW = cw;
     this.canvasH = ch;
 
-    // Mundo virtual — escala com numero de nos
     const ws = this._worldScale();
     this.W  = cw * ws;
     this.H  = ch * ws;
     this.cx = this.W / 2;
     this.cy = this.H / 2;
-
-    // baseZoom: encaixa o mundo inteiro no canvas
     this.baseZoom = 1 / ws;
 
-    // Se worldScale mudou, resetar view para mostrar tudo
     if (ws !== this._lastWorldScale) {
       this.zoom = 1;
       this.panX = 0;
@@ -141,25 +122,21 @@ class PersonaNetwork {
       this._lastWorldScale = ws;
     }
 
-    // Atualiza raio de todos os nos
     const r = this._nodeRadius();
     this.nodes.forEach(n => { n.r = r; });
-
     if (this.mainNode) { this.mainNode.x = this.cx; this.mainNode.y = this.cy; }
   }
 
-  // ── Node Management ───────────────────────────────────────
   setMainUser(user) {
     this.mainNode = {
       id: user.id, name: user.name, color: user.color,
       x: this.cx, y: this.cy, vx: 0, vy: 0,
       r: 26, isMain: true
     };
-    if (!this.animId) this._startLoop();
+    this._restartSettle();
   }
 
   addPerson(person) {
-    // Inicializa o no em posicao aleatoria DENTRO do seu quadrante
     const b = this._quadrantBounds(person.color);
     const r = this._nodeRadius();
     const margin = r + 20;
@@ -173,7 +150,6 @@ class PersonaNetwork {
       x = this.cx + (Math.random() - 0.5) * 80;
       y = this.cy + (Math.random() - 0.5) * 80;
     }
-
     this.nodes.push({
       id: person.id, name: person.name, color: person.color,
       x, y,
@@ -182,7 +158,7 @@ class PersonaNetwork {
       r, isMain: false
     });
     this._resize();
-    if (!this.animId) this._startLoop();
+    this._restartSettle();
   }
 
   loadAll(mainUser, persons) {
@@ -194,9 +170,9 @@ class PersonaNetwork {
   removePerson(id) {
     this.nodes = this.nodes.filter(n => n.id !== id);
     this._resize();
+    this._restartSettle();
   }
 
-  // ── Physics ───────────────────────────────────────────────
   _physics() {
     const allNodes = this.mainNode ? [this.mainNode, ...this.nodes] : this.nodes;
     const { repulsion, damping, speedCap, minDist, wallStr } = this._physicsParams();
@@ -204,7 +180,6 @@ class PersonaNetwork {
     for (const n of this.nodes) {
       let fx = 0, fy = 0;
 
-      // ── Repulsao entre nos ─────────────────────────────────
       for (const m of allNodes) {
         if (m === n) continue;
         const dx = n.x - m.x, dy = n.y - m.y;
@@ -217,19 +192,16 @@ class PersonaNetwork {
         }
       }
 
-      // ── Paredes do quadrante (mantêm no em seu quadrante) ──
       const b = this._quadrantBounds(n.color);
       if (b) {
         const pad   = n.r + 10;
-        const wZone = pad * 3.5; // distancia de ativacao da parede
-
+        const wZone = pad * 3.5;
         const dl = n.x - (b.left  + pad); if (dl < wZone) fx += wallStr / Math.max(1, dl * dl);
         const dr = (b.right  - pad) - n.x; if (dr < wZone) fx -= wallStr / Math.max(1, dr * dr);
         const dt = n.y - (b.top   + pad); if (dt < wZone) fy += wallStr / Math.max(1, dt * dt);
         const db = (b.bottom - pad) - n.y; if (db < wZone) fy -= wallStr / Math.max(1, db * db);
       }
 
-      // ── Aplicar forcas ─────────────────────────────────────
       n.vx = (n.vx + fx) * damping;
       n.vy = (n.vy + fy) * damping;
       const speed = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
@@ -237,7 +209,6 @@ class PersonaNetwork {
       n.x += n.vx;
       n.y += n.vy;
 
-      // ── Clamp duro: nunca sai do quadrante ─────────────────
       if (b) {
         n.x = Math.max(b.left  + n.r + 2, Math.min(b.right  - n.r - 2, n.x));
         n.y = Math.max(b.top   + n.r + 2, Math.min(b.bottom - n.r - 2, n.y));
@@ -247,7 +218,6 @@ class PersonaNetwork {
       }
     }
 
-    // No principal fica no centro
     if (this.mainNode) {
       this.mainNode.x += (this.cx - this.mainNode.x) * 0.08;
       this.mainNode.y += (this.cy - this.mainNode.y) * 0.08;
@@ -255,17 +225,14 @@ class PersonaNetwork {
     }
   }
 
-  // ── Rendering ─────────────────────────────────────────────
   _totalScale() { return this.baseZoom * this.zoom; }
 
   _draw() {
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.canvasW, this.canvasH);
-
     ctx.save();
     ctx.translate(this.panX, this.panY);
     ctx.scale(this._totalScale(), this._totalScale());
-
     this._drawQuadrants(ctx);
     if (this.mainNode) {
       this.nodes.forEach(n => this._drawEdge(ctx, this.mainNode, n));
@@ -274,18 +241,15 @@ class PersonaNetwork {
       this._drawAxisLabels(ctx);
     }
     ctx.restore();
-
-    this._drawNodeCount(ctx);
-    if (this._worldScale() > 1) this._drawZoomHint(ctx);
   }
 
   _drawQuadrants(ctx) {
     const { cx, cy, W, H } = this;
     [
-      { x: 0,  y: 0,  w: cx, h: cy, color: PERSONALITIES.V.colorRgb  },
-      { x: cx, y: 0,  w: W-cx, h: cy, color: PERSONALITIES.A.colorRgb  },
+      { x: 0,  y: 0,  w: cx,   h: cy,   color: PERSONALITIES.V.colorRgb  },
+      { x: cx, y: 0,  w: W-cx, h: cy,   color: PERSONALITIES.A.colorRgb  },
       { x: cx, y: cy, w: W-cx, h: H-cy, color: PERSONALITIES.Ve.colorRgb },
-      { x: 0,  y: cy, w: cx, h: H-cy, color: PERSONALITIES.Az.colorRgb }
+      { x: 0,  y: cy, w: cx,   h: H-cy, color: PERSONALITIES.Az.colorRgb }
     ].forEach(r => {
       ctx.fillStyle = `rgba(${r.color}, 0.045)`;
       ctx.fillRect(r.x, r.y, r.w, r.h);
@@ -300,8 +264,8 @@ class PersonaNetwork {
     ctx.stroke(); ctx.setLineDash([]); ctx.restore();
 
     const labels = [
-      { text: 'VERMELHO', x: 10,   y: 20,  color: PERSONALITIES.V.color,  align: 'left'  },
-      { text: 'AMARELO',  x: W-10, y: 20,  color: PERSONALITIES.A.color,  align: 'right' },
+      { text: 'VERMELHO', x: 10,   y: 20,   color: PERSONALITIES.V.color,  align: 'left'  },
+      { text: 'AMARELO',  x: W-10, y: 20,   color: PERSONALITIES.A.color,  align: 'right' },
       { text: 'VERDE',    x: W-10, y: H-10, color: PERSONALITIES.Ve.color, align: 'right' },
       { text: 'AZUL',     x: 10,   y: H-10, color: PERSONALITIES.Az.color, align: 'left'  }
     ];
@@ -375,36 +339,35 @@ class PersonaNetwork {
     ctx.restore();
   }
 
-  _drawNodeCount(ctx) {
-    if (!this.nodes.length) return;
-    ctx.save();
-    ctx.font = '500 10px -apple-system, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.22)';
-    ctx.textAlign = 'right';
-    ctx.fillText(`${this.nodes.length} conexoes`, this.canvasW - 12, 28);
-    ctx.restore();
-  }
-
-  _drawZoomHint(ctx) {
-    if (this.zoom > 1.1) return;
-    ctx.save();
-    ctx.font = '400 9px -apple-system, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.20)';
-    ctx.textAlign = 'center';
-    ctx.fillText('Junte 2 dedos para aproximar', this.canvasW / 2, this.canvasH - 8);
-    ctx.restore();
-  }
-
-  // ── Loop ──────────────────────────────────────────────────
+  // ── Loop: roda fisica por N frames, depois para ────────────
   _startLoop() {
     if (this.animId) return;
-    const loop = () => { this._physics(); this._draw(); this.animId = requestAnimationFrame(loop); };
+    if (this._settleFrames <= 0) { this._draw(); return; }
+    const loop = () => {
+      this._physics();
+      this._draw();
+      this._settleFrames--;
+      if (this._settleFrames > 0) {
+        this.animId = requestAnimationFrame(loop);
+      } else {
+        this.animId = null;
+        this._draw();
+      }
+    };
     this.animId = requestAnimationFrame(loop);
   }
-  _pauseLoop() { if (this.animId) { cancelAnimationFrame(this.animId); this.animId = null; } }
-  _resumeLoop() { if (!this.animId) this._startLoop(); }
-  stopLoop() { this._pauseLoop(); }
+  _pauseLoop()  { if (this.animId) { cancelAnimationFrame(this.animId); this.animId = null; } }
+  _resumeLoop() { if (!this.animId && this._settleFrames > 0) this._startLoop(); }
+  stopLoop()    { this._pauseLoop(); }
   onTabVisible(v) { v ? this._resumeLoop() : this._pauseLoop(); }
+
+  _restartSettle() {
+    this._settleFrames = 300;
+    this._pauseLoop();
+    this._startLoop();
+  }
+
+  _redraw() { if (!this.animId) this._draw(); }
 
   // ── Events ────────────────────────────────────────────────
   _bindEvents() {
@@ -416,6 +379,7 @@ class PersonaNetwork {
       e.preventDefault();
       const pos = this._getCanvasPos(e);
       this._applyZoom(e.deltaY < 0 ? 1.12 : 0.89, pos.x, pos.y);
+      this._redraw();
     }, { passive: false });
 
     this.canvas.addEventListener('touchstart', e => this._onTouchStart(e), { passive: true });
@@ -457,6 +421,7 @@ class PersonaNetwork {
   _onMouseMove(e) {
     const pos  = this._getCanvasPos(e);
     const node = this._findNodeAt(pos);
+    const changed = this.hoveredNode !== node;
     this.hoveredNode = node;
     this.canvas.style.cursor = node ? 'pointer' : 'default';
     if (node && this.tooltip) {
@@ -468,18 +433,21 @@ class PersonaNetwork {
     } else if (this.tooltip) {
       this.tooltip.classList.remove('visible');
     }
+    if (changed) this._redraw();
   }
 
   _onMouseLeave() {
     this.hoveredNode = null;
     this.canvas.style.cursor = 'default';
     if (this.tooltip) this.tooltip.classList.remove('visible');
+    this._redraw();
   }
 
   _onClick(e) {
     const pos  = this._getCanvasPos(e);
     const node = this._findNodeAt(pos);
     this.selectedNode = node;
+    this._redraw();
     if (node && typeof window.onNetworkNodeClick === 'function') window.onNetworkNodeClick(node);
   }
 
@@ -514,11 +482,12 @@ class PersonaNetwork {
       this.panX = cx - (cx - this.panX) * (newS / curS);
       this.panY = cy - (cy - this.panY) * (newS / curS);
       this.zoom = nz;
+      this._redraw();
     } else if (e.touches.length === 1 && this._dragStart) {
       const nx = e.touches[0].clientX - this._dragStart.x;
       const ny = e.touches[0].clientY - this._dragStart.y;
       if (!this._isDragging && Math.abs(nx-this.panX)+Math.abs(ny-this.panY) > 6) this._isDragging = true;
-      if (this._isDragging) { this.panX = nx; this.panY = ny; }
+      if (this._isDragging) { this.panX = nx; this.panY = ny; this._redraw(); }
     }
   }
 
