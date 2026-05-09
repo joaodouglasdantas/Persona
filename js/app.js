@@ -291,7 +291,7 @@ function renderProfileTab(user, persons) {
   if (charImg && COLOR_TO_IMAGE[user.color]) {
     charImg.src = `images/${COLOR_TO_IMAGE[user.color]}.png`;
     charImg.style.animation = 'none';
-    charImg.offsetHeight; // força reflow para reiniciar animação
+    charImg.offsetHeight;
     charImg.style.animation = '';
   }
 
