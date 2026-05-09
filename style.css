@@ -691,7 +691,7 @@ p  { color: var(--text-muted); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .profile-layout { flex-direction: column; }
   .profile-character { display: none; }
 }
