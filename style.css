@@ -659,7 +659,6 @@ p  { color: var(--text-muted); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  max-width: 900px;
 }
 @media (max-width: 700px) { .profile-grid { grid-template-columns: 1fr; } }
 
