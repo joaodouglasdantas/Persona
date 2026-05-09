@@ -270,6 +270,8 @@ function closeNodeModal() {
   document.getElementById('node-modal').classList.remove('open');
 }
 
+const COLOR_TO_IMAGE = { V: 'vermelho', A: 'amarelo', Ve: 'verde', Az: 'azul' };
+
 function renderProfileTab(user, persons) {
   const p = PERSONALITIES[user.color];
 
@@ -284,6 +286,14 @@ function renderProfileTab(user, persons) {
   const card = document.getElementById('profile-main-card');
   card.style.borderColor  = p.color;
   card.style.background   = `rgba(${p.colorRgb},0.06)`;
+
+  const charImg = document.getElementById('profile-character-img');
+  if (charImg && COLOR_TO_IMAGE[user.color]) {
+    charImg.src = `images/${COLOR_TO_IMAGE[user.color]}.png`;
+    charImg.style.animation = 'none';
+    charImg.offsetHeight; // força reflow para reiniciar animação
+    charImg.style.animation = '';
+  }
 
   const strEl = document.getElementById('profile-strengths');
   strEl.innerHTML = p.strengths.map(s =>
