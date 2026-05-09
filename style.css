@@ -670,10 +670,10 @@ p  { color: var(--text-muted); }
 }
 
 .profile-character {
-  width: 240px;
-  min-width: 240px;
+  width: 400px;
+  min-width: 400px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   align-self: stretch;
   pointer-events: none;
@@ -681,9 +681,9 @@ p  { color: var(--text-muted); }
 
 .profile-character img {
   width: 100%;
-  max-height: 520px;
+  max-height: 640px;
   object-fit: contain;
-  object-position: bottom;
+  object-position: center;
   filter: drop-shadow(0 8px 32px rgba(0,0,0,0.35));
   animation: characterFadeIn 0.5s ease;
 }
