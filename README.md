@@ -6,7 +6,7 @@
 
 ## O que é?
 
-Persona é um quiz de personalidade baseado nos **4 Perfis de Comunicação** de Vitor Santos (canal Metaforando). Com 15 perguntas, o app revela qual das 4 cores representa sua forma de se comunicar — e ainda permite mapear as pessoas ao seu redor em uma teia interativa de conexões.
+Persona é um quiz de personalidade baseado nos **4 Perfis de Comunicação** de Vitor Santos (canal Metaforando). Com 20 perguntas, o app revela qual das 4 cores representa sua forma de se comunicar — e ainda permite mapear as pessoas ao seu redor em uma teia interativa de conexões.
 
 Feito por pura diversão, sem pretensão alguma.
 
