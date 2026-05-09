@@ -661,7 +661,7 @@ p  { color: var(--text-muted); }
 }
 
 .profile-grid {
-  flex: 1;
+  flex: 3;
   min-width: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
