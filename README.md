@@ -14,7 +14,7 @@ Feito por pura diversão, sem pretensão alguma.
 
 ## Funcionalidades
 
-- **Quiz de 15 perguntas** para descobrir seu perfil de personalidade
+- **Quiz de 20 perguntas** para descobrir seu perfil de personalidade
 - **4 perfis de cor** com descrições detalhadas de pontos fortes, desafios, motivações e medos
 - **Teia de conexões** interativa — adicione amigos, familiares e colegas e veja as compatibilidades
 - **Dashboard pessoal** com distribuição de perfil e análise de conexões
