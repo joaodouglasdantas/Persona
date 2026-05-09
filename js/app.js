@@ -346,7 +346,7 @@ function renderExplainTab(user) {
             <h3 style="color:${p.color}">${p.name}</h3>
             <div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px">${p.title}</div>
           </div>
-          ${user.color === p.id ? `<span style="position:absolute;top:12px;right:12px;font-size:0.72rem;background:rgba(${p.colorRgb},0.2);color:${p.color};padding:3px 10px;border-radius:10px;font-weight:700">SEU PERFIL</span>` : ''}
+          ${user.color === p.id ? `<span style="position:absolute;top:12px;right:12px;font-size:0.62rem;background:rgba(${p.colorRgb},0.2);color:${p.color};padding:3px 10px;border-radius:10px;font-weight:700">SEU PERFIL</span>` : ''}
           </div>
         <div class="explain-card-body">
           <p>${p.description}</p>
