@@ -379,6 +379,226 @@ const QUESTIONS = [
       { text: "Ouve tudo com cuidado e valida o sentimento da pessoa antes de qualquer sugestão.", color: "Ve" },
       { text: "Faz perguntas para entender bem a situação antes de opinar com embasamento.", color: "Az" }
     ]
+  },
+  {
+    id: 21,
+    stemSelf: "Ao liderar um projeto no trabalho, qual é o seu estilo predominante?",
+    stemOther: "Ao liderar um projeto no trabalho, qual costuma ser o estilo predominante de {name}?",
+    options: [
+      { text: "Define metas claras, cobra prazos e mantém o foco total no resultado.", color: "V" },
+      { text: "Motiva o time com entusiasmo e estimula ideias novas o tempo todo.", color: "A" },
+      { text: "Garante que todos se sintam ouvidos e trabalhando em harmonia.", color: "Ve" },
+      { text: "Planeja cada etapa com cuidado e monitora a qualidade dos detalhes.", color: "Az" }
+    ]
+  },
+  {
+    id: 22,
+    stemSelf: "Como você organiza sua rotina de trabalho ao longo da semana?",
+    stemOther: "Como {name} costuma organizar sua rotina de trabalho ao longo da semana?",
+    options: [
+      { text: "Prioriza o que gera mais impacto e resultado, sem muita cerimônia.", color: "V" },
+      { text: "Vai ajustando conforme surgem oportunidades e conversas interessantes.", color: "A" },
+      { text: "Mantém um ritmo estável, respeitando compromissos com a equipe.", color: "Ve" },
+      { text: "Segue uma agenda detalhada, planejada com antecedência.", color: "Az" }
+    ]
+  },
+  {
+    id: 23,
+    stemSelf: "Diante de um chefe ou liderança que muda de ideia com frequência, você:",
+    stemOther: "Diante de um chefe ou liderança que muda de ideia com frequência, {name} costuma:",
+    options: [
+      { text: "Se frustra com a perda de tempo e cobra uma direção mais firme.", color: "V" },
+      { text: "Se adapta com facilidade, encara como parte natural do jogo.", color: "A" },
+      { text: "Sente desconforto com a instabilidade, mas evita confrontar.", color: "Ve" },
+      { text: "Fica incomodado com a falta de planejamento e consistência.", color: "Az" }
+    ]
+  },
+  {
+    id: 24,
+    stemSelf: "Ao receber uma tarefa no trabalho sem instruções muito claras, o que você faz primeiro?",
+    stemOther: "Ao receber uma tarefa no trabalho sem instruções muito claras, o que {name} costuma fazer primeiro?",
+    options: [
+      { text: "Já começa a executar da forma que parece mais eficiente.", color: "V" },
+      { text: "Conversa com colegas para trocar ideias sobre como abordar.", color: "A" },
+      { text: "Pergunta com cuidado para não incomodar quem delegou.", color: "Ve" },
+      { text: "Busca esclarecer todos os detalhes antes de dar qualquer passo.", color: "Az" }
+    ]
+  },
+  {
+    id: 25,
+    stemSelf: "Em uma negociação de salário ou benefícios, qual é a sua abordagem?",
+    stemOther: "Em uma negociação de salário ou benefícios, qual costuma ser a abordagem de {name}?",
+    options: [
+      { text: "Vai direto ao ponto, apresenta números e resultados que justificam o pedido.", color: "V" },
+      { text: "Usa a conversa para criar conexão e mostrar entusiasmo pelo futuro.", color: "A" },
+      { text: "Evita parecer ganancioso, prefere que o reconhecimento venha naturalmente.", color: "Ve" },
+      { text: "Chega com pesquisa de mercado e argumentos bem fundamentados.", color: "Az" }
+    ]
+  },
+  {
+    id: 26,
+    stemSelf: "Como você se comporta em um ambiente de trabalho competitivo?",
+    stemOther: "Como {name} costuma se comportar em um ambiente de trabalho competitivo?",
+    options: [
+      { text: "Se destaca com facilidade, gosta do desafio de superar metas.", color: "V" },
+      { text: "Usa a competição de forma leve, motivando os outros também.", color: "A" },
+      { text: "Se incomoda com a rivalidade, prefere colaboração à disputa.", color: "Ve" },
+      { text: "Foca em fazer o trabalho bem-feito, sem se importar com o ranking.", color: "Az" }
+    ]
+  },
+  {
+    id: 27,
+    stemSelf: "Quando um colega de equipe não cumpre a parte dele no trabalho, você:",
+    stemOther: "Quando um colega de equipe não cumpre a parte dele no trabalho, {name} costuma:",
+    options: [
+      { text: "Cobra diretamente e resolve a situação sem enrolação.", color: "V" },
+      { text: "Tenta engajar a pessoa de novo com incentivo e boa energia.", color: "A" },
+      { text: "Assume parte da tarefa para não gerar atrito com o colega.", color: "Ve" },
+      { text: "Documenta o ocorrido e trata o assunto de forma objetiva e formal.", color: "Az" }
+    ]
+  },
+  {
+    id: 28,
+    stemSelf: "Ao apresentar um relatório ou resultado para a diretoria, você prefere:",
+    stemOther: "Ao apresentar um relatório ou resultado para a diretoria, {name} costuma preferir:",
+    options: [
+      { text: "Ir direto aos números e recomendações, sem enrolação.", color: "V" },
+      { text: "Contar a história por trás dos dados de forma envolvente.", color: "A" },
+      { text: "Destacar o impacto da equipe e reconhecer o esforço coletivo.", color: "Ve" },
+      { text: "Apresentar gráficos detalhados e embasar cada conclusão.", color: "Az" }
+    ]
+  },
+  {
+    id: 29,
+    stemSelf: "Qual é o seu maior critério ao avaliar uma proposta de emprego?",
+    stemOther: "Qual costuma ser o maior critério de {name} ao avaliar uma proposta de emprego?",
+    options: [
+      { text: "O potencial de crescimento rápido e os resultados que pode gerar.", color: "V" },
+      { text: "O quanto o ambiente parece dinâmico, criativo e cheio de gente boa.", color: "A" },
+      { text: "O quanto a cultura da empresa parece acolhedora e estável.", color: "Ve" },
+      { text: "A clareza dos processos, benefícios e estrutura oferecida.", color: "Az" }
+    ]
+  },
+  {
+    id: 30,
+    stemSelf: "Como você lida com mudanças repentinas de estratégia na empresa?",
+    stemOther: "Como {name} costuma lidar com mudanças repentinas de estratégia na empresa?",
+    options: [
+      { text: "Se adapta rápido, contanto que a nova direção traga resultados.", color: "V" },
+      { text: "Encara como uma oportunidade animadora de recomeçar algo novo.", color: "A" },
+      { text: "Precisa de um tempo para se ajustar e busca segurança na equipe.", color: "Ve" },
+      { text: "Quer entender a lógica por trás da mudança antes de aceitar bem.", color: "Az" }
+    ]
+  },
+  {
+    id: 31,
+    stemSelf: "Em uma sessão de brainstorm com a equipe, qual papel você costuma assumir?",
+    stemOther: "Em uma sessão de brainstorm com a equipe, qual papel {name} costuma assumir?",
+    options: [
+      { text: "Filtra rápido as ideias e direciona para as mais viáveis.", color: "V" },
+      { text: "Gera o maior número de ideias, mesmo as mais ousadas.", color: "A" },
+      { text: "Garante que todos tenham espaço para falar e contribuir.", color: "Ve" },
+      { text: "Avalia a viabilidade prática e os riscos de cada ideia.", color: "Az" }
+    ]
+  },
+  {
+    id: 32,
+    stemSelf: "Quando comete um erro importante no trabalho, sua primeira atitude é:",
+    stemOther: "Quando comete um erro importante no trabalho, a primeira atitude de {name} costuma ser:",
+    options: [
+      { text: "Corrigir rápido e seguir em frente, sem ficar remoendo.", color: "V" },
+      { text: "Comentar abertamente com a equipe e buscar apoio para resolver.", color: "A" },
+      { text: "Se sentir mal por ter incomodado alguém e buscar reparar a relação.", color: "Ve" },
+      { text: "Investigar a causa raiz para garantir que não se repita.", color: "Az" }
+    ]
+  },
+  {
+    id: 33,
+    stemSelf: "Como você reage diante de um prazo que parece impossível de cumprir?",
+    stemOther: "Como {name} costuma reagir diante de um prazo que parece impossível de cumprir?",
+    options: [
+      { text: "Aceita o desafio e busca a forma mais rápida de entregar.", color: "V" },
+      { text: "Improvisa soluções criativas para dar conta no tempo que tem.", color: "A" },
+      { text: "Se estressa internamente, mas tenta manter a calma pelo grupo.", color: "Ve" },
+      { text: "Questiona a viabilidade e propõe um prazo mais realista.", color: "Az" }
+    ]
+  },
+  {
+    id: 34,
+    stemSelf: "Ao treinar ou ensinar alguém novo na equipe, o seu estilo é:",
+    stemOther: "Ao treinar ou ensinar alguém novo na equipe, o estilo de {name} costuma ser:",
+    options: [
+      { text: "Direto ao ponto, ensina o essencial para a pessoa já produzir.", color: "V" },
+      { text: "Envolvente, usa exemplos e histórias para tornar o aprendizado leve.", color: "A" },
+      { text: "Paciente, dá suporte constante e cria um ambiente seguro para errar.", color: "Ve" },
+      { text: "Estruturado, ensina passo a passo com base sólida e detalhada.", color: "Az" }
+    ]
+  },
+  {
+    id: 35,
+    stemSelf: "Qual ambiente de trabalho é ideal para você?",
+    stemOther: "Qual ambiente de trabalho costuma ser ideal para {name}?",
+    options: [
+      { text: "Dinâmico, com autonomia e foco em bater metas.", color: "V" },
+      { text: "Animado, colaborativo e com espaço para inovar.", color: "A" },
+      { text: "Estável, acolhedor e com boas relações entre colegas.", color: "Ve" },
+      { text: "Organizado, com processos claros e baixo nível de imprevisto.", color: "Az" }
+    ]
+  },
+  {
+    id: 36,
+    stemSelf: "Como você lida com política e jogos de poder no ambiente de trabalho?",
+    stemOther: "Como {name} costuma lidar com política e jogos de poder no ambiente de trabalho?",
+    options: [
+      { text: "Joga o jogo quando necessário para garantir os resultados.", color: "V" },
+      { text: "Prefere contornar com carisma e boas relações pessoais.", color: "A" },
+      { text: "Evita ao máximo, prefere ficar longe de disputas internas.", color: "Ve" },
+      { text: "Observa com cautela e evita se envolver sem necessidade clara.", color: "Az" }
+    ]
+  },
+  {
+    id: 37,
+    stemSelf: "Diante de uma promoção que exige assumir muito mais responsabilidade, você:",
+    stemOther: "Diante de uma promoção que exige assumir muito mais responsabilidade, {name} costuma:",
+    options: [
+      { text: "Aceita de imediato, vê como uma chance de crescer e produzir mais.", color: "V" },
+      { text: "Fica animado com as novas possibilidades e desafios que virão.", color: "A" },
+      { text: "Pondera com cuidado o impacto na sua vida e nas suas relações.", color: "Ve" },
+      { text: "Analisa com calma os prós e contras antes de decidir.", color: "Az" }
+    ]
+  },
+  {
+    id: 38,
+    stemSelf: "Como você prefere ser reconhecido pelo seu trabalho?",
+    stemOther: "Como {name} costuma preferir ser reconhecido pelo trabalho que faz?",
+    options: [
+      { text: "Com resultados visíveis e conquistas mensuráveis.", color: "V" },
+      { text: "Com elogios públicos e destaque perante o grupo.", color: "A" },
+      { text: "Com um agradecimento sincero e sentido de pertencimento à equipe.", color: "Ve" },
+      { text: "Com o reconhecimento da qualidade e precisão do que foi entregue.", color: "Az" }
+    ]
+  },
+  {
+    id: 39,
+    stemSelf: "Quando o trabalho em equipe trava por divergência de opiniões, você:",
+    stemOther: "Quando o trabalho em equipe trava por divergência de opiniões, {name} costuma:",
+    options: [
+      { text: "Toma a decisão para destravar logo e seguir em frente.", color: "V" },
+      { text: "Propõe uma ideia nova que una os dois lados de forma criativa.", color: "A" },
+      { text: "Busca um meio-termo que deixe todos confortáveis.", color: "Ve" },
+      { text: "Sugere avaliar dados e critérios objetivos para decidir.", color: "Az" }
+    ]
+  },
+  {
+    id: 40,
+    stemSelf: "Ao planejar seu crescimento de carreira a longo prazo, você foca em:",
+    stemOther: "Ao planejar o crescimento de carreira a longo prazo, {name} costuma focar em:",
+    options: [
+      { text: "Subir de cargo e aumentar sua influência e resultados.", color: "V" },
+      { text: "Explorar áreas novas e diversificar experiências.", color: "A" },
+      { text: "Construir relações sólidas e um legado de confiança.", color: "Ve" },
+      { text: "Se tornar uma referência técnica e especialista de excelência.", color: "Az" }
+    ]
   }
 ];
 
